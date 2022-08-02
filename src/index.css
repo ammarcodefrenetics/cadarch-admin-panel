@@ -1,0 +1,31 @@
+:root{
+    --Primary : #2e3236;
+    --Secondary : #f9bd00;
+    --SecondaryLight : #fcf3d8;
+    --LightGray : #f0f0f0;
+    --LighterGray : #f8f8f8;
+    --Black : black;
+    --White : white;
+    --Gray : #b1b1b1;
+    --DarkGray : gray;
+    --Green : green;
+    --Red : red;
+    --Yellow : yellow;
+    --Orange : orange;
+    --Blue : blue;
+    --Transparent : transparent;
+    --DarkOpacity : rgba(0,0,0,0.5);
+    --LightOpacity : rgba(255,255,255,0.5);
+    --AppBlue:#00B4E5;
+}
+#draggable-dialog-title{
+    cursor: move !important;
+}
+/* body::-webkit-scrollbar{
+width:5px;
+background:#dadada;
+}
+body::-webkit-scrollbar-thumb{
+background:#1e90ff;
+border-radius: 100px;
+} */
