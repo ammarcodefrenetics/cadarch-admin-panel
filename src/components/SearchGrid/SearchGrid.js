@@ -55,7 +55,6 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
         const result = await GetDataAPI('dependencies/getDependencies')
         if (result.responseCode == 1 && result.responseStatus == "success") {
             setDependencies(result.data.data)
-            console.log("---- data ",result.data.data)
             data=result.data.data
         }
     }
@@ -90,30 +89,38 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
         return [...checkBasic, ...checkDetailed]
 
     }
-    console.log(dependencies , " before passing as params")
     const loadData = (filter, Values) => {
         setIsLoading(true)
-        console.log("Loading Data")
+    
+
         GetDataAPI(props.apiUrl).then((result) => {
+
             setIsLoading(false);
             if (result.responseCode == 1 && result.responseStatus == "success") {
                 let allQuestions = []
                 if (isQuestions) {
-                    allQuestions = sortByQuestionType(result.data.data)
+                  allQuestions = sortByQuestionType(result.data.data)
                 }
                 setRowsData(
-                    isQuestions ? allQuestions.map((item, i) => {
+                    isQuestions ? allQuestions.map((item, i ,array) => { 
                         item.key = item[gridCnfg[props.columnCode][0].dataIndex];
-                        item.isBasic = item.isBasic ? 'yes' : 'no'
+                      
+                        // item.isBasic = item.isBasic ? 'yes' : 'no'
+                     
                         item.size = item.size ? item.size + " " + item.unit : ""
                         item.action =
                             <div style={{ width: "100%", textAlign: "right"  }}>
                                 {isQuestions && i !== allQuestions.length - 1 && <Tooltip style={{ paddingRight: 5 }} title="Swipe Down">
-                                    <Icon> <img src={arrowDown} onClick={() => onSwipe(item._id, allQuestions[i + 1]._id,item.isBasic, allQuestions[i + 1].isBasic, data, item.displayOrder, allQuestions[i + 1].displayOrder)} className={classes.Icon} /> </Icon>
+                                    <Icon> <img src={arrowDown} onClick={() => {
+                                        onSwipe(item._id, array[i + 1]._id,item.isBasic, array[i + 1].isBasic, data, item.displayOrder, array[i + 1].displayOrder)
+                                    }} className={classes.Icon} /> </Icon>
                                 </Tooltip>
                                 }
                                 {isQuestions && i !== 0 && <Tooltip style={{ paddingRight: 5 }} title="Swipe Up">
-                                    <Icon> <img src={arrowUp} onClick={() => onSwipe(item._id, allQuestions[i - 1]._id,item.isBasic, allQuestions[i - 1].isBasic, data, item.displayOrder, allQuestions[i - 1].displayOrder)} className={classes.Icon} /> </Icon>
+                                    <Icon> <img src={arrowUp} onClick={() => {
+                                        onSwipe(item._id, array[i - 1]._id,item.isBasic, array[i - 1].isBasic, data, item.displayOrder, array[i - 1].displayOrder)
+                                    }
+                                     } className={classes.Icon} /> </Icon>
                                 </Tooltip>
                                 }
                                 {isView && <Tooltip title="View">

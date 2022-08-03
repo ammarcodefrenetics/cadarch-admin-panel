@@ -901,6 +901,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             id="isBasic"
                                                             name="isBasic"
                                                             checked={state.isBasic}
+                                                            IsDisabled={isEdit ? true : false}
                                                             label="Is Basic"
                                                             onChange={handleChkboxChange}
                                                         />
@@ -1302,11 +1303,11 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                     handleClose={() => {
                         setImagViewerDialogState(false)
                         setOptionImagePath('')
-                        setAttachment({
-                            file: '',
-                            fileToSend: '',
-                            fileName: ''
-                        })
+                        // setAttachment({
+                        //     file: '',
+                        //     fileToSend: '',
+                        //     fileName: ''
+                        // })
                     }} />
             }
             <ActionDialog

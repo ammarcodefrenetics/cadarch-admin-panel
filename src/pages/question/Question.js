@@ -78,7 +78,6 @@ function CostEstimator(props) {
         setDialogState(false);
     }
     const handleSwipe = (id1, id2, isBasic1, isBasic2, dependencyArray, displayOrder1, displayOrder2) => {
-        console.log(dependencyArray,"dep array")
         if (id1 && id2 && isBasic1 && isBasic2 && dependencyArray && displayOrder1 && displayOrder2) {
             if (dependencyArray.length > 0) {
                 for (let i = 0; i < dependencyArray.length; i++) {
@@ -94,6 +93,7 @@ function CostEstimator(props) {
                 }
             }
             if (isBasic1 === 'yes' && isBasic2 === 'no' || isBasic2 === 'yes' && isBasic1 === 'no') {
+                console.log('got is second check')
                 showMessage("Error", "Cannot swipe with basic question", "error", 3000);
                 return
             }

@@ -190,6 +190,12 @@ export const data = {
             title: 'Is Basic',
             dataIndex: 'isBasic',
             className: "width65",
+            render: function (text, record, index) {
+                return record.isBasic ?
+                    <span >yes</span> :
+                    <span >no</span>
+
+            }
             // sorter: (a, b) => {
             //     a = a.isBasic != null ? a.isBasic + '' : "";
             //     b = b.isBasic != null ? b.isBasic + '' : "";
