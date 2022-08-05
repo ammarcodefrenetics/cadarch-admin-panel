@@ -18,6 +18,7 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { InputNumber } from 'antd';//, DatePicker
 import useStyles from "./styles";
+import { TramRounded } from "@material-ui/icons";
 
 // import moment from 'moment';
 
@@ -313,28 +314,30 @@ CustomSelectField.propTypes = {
 };
 function MultiSelectField({ id, name, Value, options, onChange, placeholder, isDisabled, isDisableClearable, ...props }) {
     var classes = useStyles();
-    const [defvalue, setDefaultValues] = useState([]);
+    const [defvalue, setDefaultValues] = useState('');
     const onChangeEvent = (selected) => {
+        console.log(selected , " selected multi select")
         if (selected != null) {
-            let selectedvalues = selected.map((sel) => {
-                return sel.value;
-            })
-            onChange(name, selectedvalues);
+            // let selectedvalues = selected.map((sel) => {
+            //     return sel.value;
+            // })
+            onChange(name, selected.value);
         }
     };
     //Get default set option
     const getSelectedItem = () => {
-        let defaultvalues = [];
+        // let defaultvalues = [];
         const item = options.map((opt) => {
             if (Value != null || Value != undefined) {
-                Value.map((selval) => {
-                    if (opt.value === selval) {
-                        defaultvalues.push(opt);
+                // Value.map((selval) => {
+                    if (opt.value === Value) {
+                        setDefaultValues(opt);
                     }
-                })
-                setDefaultValues(defaultvalues);
+                // })
+                // setDefaultValues(defaultvalues);
             }
-        }); setDefaultValues(defaultvalues);
+        });
+         setDefaultValues('');
         return item || {};
     }
     //Get default selected value when options or values provided are changed
@@ -345,8 +348,8 @@ function MultiSelectField({ id, name, Value, options, onChange, placeholder, isD
     return (
         <>
             <Autocomplete
-                multiple
-                limitTags={1}
+                // multiple
+                // limitTags={1}
                 size="small"
                 value={defvalue}
                 name={name}
@@ -355,7 +358,7 @@ function MultiSelectField({ id, name, Value, options, onChange, placeholder, isD
                 filterSelectedOptions
                 disableClearable={isDisableClearable}
                 getOptionLabel={(option) => option.label}
-                disabled={isDisabled}
+                disabled={defvalue.length>0 ? true : false}
                 onChange={(event, values) => onChangeEvent(values)}
                 className={classes.baseInputAutocomplete}
                 // classes={{ inputRoot: classes.baseInputAutocomplete }}

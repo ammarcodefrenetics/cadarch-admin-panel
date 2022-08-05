@@ -36,10 +36,9 @@ import { UpdateDataAPI } from "../../../../Services/UpdateDataAPI";
 import { DeleteDataAPI } from "../../../../Services/DeleteDataAPI";
 import { check } from "prettier";
 // import MapComponent from "../../../../components/map/Map";
-
-
-
+let dep = null
 function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }) {
+
     // handle styles
     var classes = useStyles();
     const { showMessage } = props;
@@ -66,7 +65,8 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
     //selected items
     const [questions, setQuestions] = useState([]);
     const [questionOptions, setQuestionOptions] = useState([]);
-    const [selectedDependencies, setSelectedDependencies] = useState([]);
+    const [selectedDependencies, setSelectedDependencies] = useState(isEdit?null:[]);
+
 
     const [loading, setLoading] = useState({ isSaving: false, isDeleting: false });
     //error message
@@ -114,7 +114,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         setAttachment({ file: null, fileToSend: null, fileName: null });
         loadQuestionData();
         setQuestionOptions([]);
-        setSelectedDependencies([]);
+        setSelectedDependencies(isEdit?null:[]);
         setErrorMessages({
             questionTitleError: false,
             questionDisplayOrderError: false,
@@ -131,7 +131,6 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
     const ResetForm = () => {
 
         if (isEdit && data && data != null) {
-            // console.log(data.isBasic , " dataaaaaaaaaaaas")
             setState({
                 id: data._id,
                 title: data.title,
@@ -344,15 +343,14 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         }));
     }
     const viewOptionImage = (item) => {
-        console.log(item , " item")
         if (Array.isArray(item.image) && item.image.length > 0) {
             let path = item?.image?.[0]?.replace(/\\/g, "/").replace('public/', '/');
             setOptionImagePath(`http://localhost:5000${path}`)
         }
-        else if(Array.isArray(item.image) && item.image.length === 0){
+        else if (Array.isArray(item.image) && item.image.length === 0) {
             return
         }
-        else{
+        else {
             setAttachment({
                 file: URL.createObjectURL(item.image),
                 fileToSend: item.image,
@@ -376,7 +374,6 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
     }
     const handleDeleteOption = (index, idToDelete) => {
         let _selectedOptions = [...questionOptions];
-        console.log(questionOptions.length, "------", questionOptions)
         if (questionOptions?.length > 2) {
             for (let i = 0; i < questionOptions.length; i++) {
                 if (!questionOptions[i]._id) {
@@ -466,6 +463,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
             return item.id
         });
         loadOptionData(item?.dependsOnQuestion?.id);
+        debugger;
         setState(prevState => ({
             ...prevState,
             dependencyId: item?._id ?? "",
@@ -478,16 +476,16 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         let _selectedDependencies = [...selectedDependencies];
         if (id && id !== "0") {
             ShowActionDialog(true, "Delete", "Are you sure, you want to delete this Dependency?", "confirm", function () {
-            UpdateDataAPI('dependencies/deleteDependencybyid', null, id).then((result) => {
-                if (result.responseCode === 1 && result.responseStatus === "success") {
-                    _selectedDependencies.splice(index, 1);
-                    setSelectedDependencies(_selectedDependencies);
-                    showMessage("Success", result.responseMessage, "success", 3000);
-                } else {
-                    showMessage("Error", result.responseMessage, "error", 3000);
-                }
+                UpdateDataAPI('dependencies/deleteDependencybyid', null, id).then((result) => {
+                    if (result.responseCode === 1 && result.responseStatus === "success") {
+                        _selectedDependencies.splice(index, 1);
+                        setSelectedDependencies(_selectedDependencies);
+                        showMessage("Success", result.responseMessage, "success", 3000);
+                    } else {
+                        showMessage("Error", result.responseMessage, "error", 3000);
+                    }
+                })
             })
-        })
         } else {
             _selectedDependencies.splice(index, 1);
             setSelectedDependencies(_selectedDependencies);
@@ -501,7 +499,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
             if (result.responseCode == 1 && result.responseStatus == "success" && result.data.data != null) {
                 // setState(result.data.data.questions);
                 setQuestionOptions(result.data.data.options);
-                setSelectedDependencies(result.data.data.dependencies)
+                setSelectedDependencies(result.data.data.dependencies)         
             }
             else if (!result.responseStatus) {
                 showMessage("Error", result.message, "error", 3000);
@@ -673,10 +671,9 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                     isDependent: state.isDependent,
                     // displayOrder: state.displayOrder,
                 };
-                setLoading({...loading , isSaving:true})
+                setLoading({ ...loading, isSaving: true })
                 PostDataAPI('question/addquestion', postData).then((result) => {
                     if (result.responseCode == 1 && result.responseStatus == "success") {
-                        console.log(result.data.data);
                         //save dependency
                         let dependencies = selectedDependencies.map((item, I) => {
                             item.dependentQuestion.id = result.data.data._id;
@@ -701,7 +698,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                         // if (optionsCounter === questionOptions?.length) {
 
                         showMessage("Succcess", "Question saved successfully", "success", 3000);
-                        setLoading({...loading , isSaving:false})
+                        setLoading({ ...loading, isSaving: false })
                         setTimeout(() => {
                             handleClose();
                         }, 2000);
@@ -723,7 +720,6 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         if (isValidated) {
             if (questionOptions?.length !== 0 && questionOptions?.length >= 2) {
                 let isDisplayOrderExists = questions.filter(item => item.id !== state.id).findIndex(item => parseInt(item.displayOrder) === parseInt(state.displayOrder));
-                console.log(questions, "questions")
                 if (isDisplayOrderExists !== -1) {
                     showMessage("Error", "Display order already exist", "error", 3000);
                     return;
@@ -736,7 +732,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                     isDependent: state.isDependent,
                     displayOrder: state.displayOrder,
                 };
-                setLoading({...loading , isSaving:true})
+                setLoading({ ...loading, isSaving: true })
                 UpdateDataAPI('question/updatequestionbyId', postData, state.id).then((result) => {
                     if (result.responseCode == 1 && result.responseStatus == "success") {
                         let dependencies = selectedDependencies.map((item, I) => {
@@ -774,7 +770,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                         })
                         // if (counter === questionOptions?.length) {
                         showMessage("Succcess", "Question updated successfully", "success", 3000);
-                        setLoading({...loading , isSaving:false})
+                        setLoading({ ...loading, isSaving: false })
                         setTimeout(() => {
                             handleClose();
                         }, 2000);
@@ -794,10 +790,10 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         ResetForm();
         setErrorMessages({});
     }
+
     //useEffect
     useEffect(() => {
         ResetForm();
-
     }, [dialogOpenClose]);
     const ShowActionDialog = (actiontype, title, message, type, OnOkCallback, OnCancellCallback) => {
         setActionDialogProps(prevState => ({
@@ -1084,19 +1080,19 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             {/* <th style={{ width: "15%" }}>Display Order</th> */}
                                                             <th style={{ width: "10%" }}>Action</th>
                                                         </tr>
-                                                    </thead>{console.log(questionOptions, "question options")}
+                                                    </thead>
                                                     <tbody>
                                                         {
                                                             questionOptions.map((item, i) => {
-                                                                return <tr>
+                                                                return <tr key={item.title}>
                                                                     <td style={{ textAlign: "left" }}>{item.title}</td>
-                                                                    <td style={{ textAlign: "left" }}>{item.details}</td>
+                                                                    <td className={classes.optionDetails} style={{ textAlign: "left",display:'block',width:'200px'}}>{item.details}</td>
                                                                     <td style={{ textAlign: "left" }}>{item.priceEffectPSF}</td>
                                                                     <td style={{ textAlign: "left" }}>
-                                                                        {(Array.isArray(item.image) && item.image.length > 0) || (item.image !==null && item.image!== undefined && item.image !== '') ? <img onClick={() => viewOptionImage(item)} src={ViewIcon} className={classes.viewIcon} alt='view' /> : null}
+                                                                        {(Array.isArray(item.image) && item.image.length > 0) || (item.image !== null && item.image !== undefined && item.image !== '') ? <img onClick={() => viewOptionImage(item)} src={ViewIcon} className={classes.viewIcon} alt='view' /> : null}
                                                                     </td>
                                                                     <td style={{ textAlign: "center" }}>
-                                                                        <img onClick={() => editOption(item)} src={EditIcon} alt="edit" />
+                                                                        {/* <img onClick={() => editOption(item)} src={EditIcon} alt="edit" /> */}
                                                                         <img src={DeleteIcon} alt="delete" onClick={() => handleDeleteOption(i, item._id)} />
                                                                     </td>
                                                                 </tr>
@@ -1111,14 +1107,13 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                         {state.isDependent &&
                                             <>
                                                 <FormGroupTitle>Dependencies</FormGroupTitle>
-                                                {showDependenciesForm && state.isBasic &&
+                                                {showDependenciesForm && state.isBasic && selectedDependencies !== null &&
                                                     <Grid container direction="row">
 
                                                         <Label title="Title" sm={2} md={2} lg={2} />
-
                                                         <Grid item xs={12} sm={4} md={4} lg={4} >
                                                             <SearchList
-                                                                id="questionId"
+                                                                id={state.id}
                                                                 name="questionName"
                                                                 value={state.id}
                                                                 isEdit={isEdit}
@@ -1126,6 +1121,8 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                                 searchTerm={state.questionName}
                                                                 code="consent_form_for_appointment"
                                                                 apiUrl="question/loadallbasicquestion"
+                                                                existingDependencies={selectedDependencies}
+
                                                                 onChangeValue={(name, item) => handleSearcdhListChange(name, item)}
                                                                 placeholderTitle="Search Questions"
                                                             />
@@ -1142,6 +1139,8 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             <MultiSelectField
                                                                 id="questionOption"
                                                                 name="questionOption"
+
+
                                                                 options={optionsList}
                                                                 isDisabled={!state.questionId}
                                                                 onChange={handleMultiSelectChange}
@@ -1160,17 +1159,17 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                     </Grid>
                                                 }
 
-                                                {showDependenciesForm && !state.isBasic &&
+                                                {showDependenciesForm && !state.isBasic && selectedDependencies !== null &&
                                                     <Grid container direction="row">
-
                                                         <Label title="Title" sm={2} md={2} lg={2} />
-                                                        {console.log(state, "state in dep list")}
                                                         <Grid item xs={12} sm={4} md={4} lg={4} >
                                                             <SearchList
-                                                                id="questionId"
+                                                                id={state.id}
                                                                 name="questionName"
                                                                 value={state.id}
                                                                 isEdit={isEdit}
+                                                                existingDependencies={selectedDependencies}
+
                                                                 displayOrder={state.displayOrder}
                                                                 searchTerm={state.questionName}
                                                                 code="consent_form_for_appointment"
@@ -1188,9 +1187,12 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
 
 
                                                         <Grid item xs={10} sm={3} md={3} lg={3} >
+
                                                             <MultiSelectField
                                                                 id="questionOption"
                                                                 name="questionOption"
+
+
                                                                 options={optionsList}
                                                                 isDisabled={!state.questionId}
                                                                 onChange={handleMultiSelectChange}
@@ -1209,7 +1211,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                     </Grid>
                                                 }
 
-                                                {selectedDependencies?.length != 0 &&
+                                                {selectedDependencies?.length != 0 && selectedDependencies !== null &&
                                                     <Grid container direction="row">
 
                                                         <table className={classes.icdCodeTable} >
@@ -1224,17 +1226,17 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             <tbody>
                                                                 {
                                                                     selectedDependencies.map((item, i) => {
-                                                                        return <tr>
+                                                                        return <tr key={item._id}>
                                                                             <td style={{ textAlign: "left" }}>{item.dependentQuestion.title}</td>
                                                                             <td style={{ textAlign: "left" }}>{item.dependsOnQuestion.title}</td>
                                                                             <td style={{ textAlign: "left" }}>
-                                                                                <tr>
-                                                                                    {
-                                                                                        item?.dependsOnOptions?.map((item2, i) => {
-                                                                                            return item2.title + `${i < item?.dependsOnOptions.length - 1 ? " - " : ''}`
-                                                                                        })
-                                                                                    }
-                                                                                </tr>
+
+                                                                                {
+                                                                                    item?.dependsOnOptions?.map((item2, i) => {
+                                                                                        return item2.title + `${i < item?.dependsOnOptions.length - 1 ? " - " : ''}`
+                                                                                    })
+                                                                                }
+
                                                                             </td>
                                                                             <td style={{ textAlign: "center" }}>
                                                                                 <img src={EditIcon} alt="edit" onClick={() => editDependency(item)} />

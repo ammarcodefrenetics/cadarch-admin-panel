@@ -261,6 +261,7 @@ function AddNews({ data, isEdit, dialogOpenClose, handleClose, ...props }) {
                                                 <InputBaseField
                                                     id="title"
                                                     name="title"
+                                                    MaxLength={50}
                                                     value={state.title}
                                                     onChange={handleChange}
                                                 />

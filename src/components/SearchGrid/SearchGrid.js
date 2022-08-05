@@ -34,7 +34,7 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
     const [gridData, setGridData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [values, setValues] = useState({});
-    const [dependencies, setDependencies] = useState('')
+    
 
     const [value, setValue] = useState('');
     const handleView = (e, object) => {
@@ -54,7 +54,6 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
     const loadDependencies = async () => {
         const result = await GetDataAPI('dependencies/getDependencies')
         if (result.responseCode == 1 && result.responseStatus == "success") {
-            setDependencies(result.data.data)
             data=result.data.data
         }
     }

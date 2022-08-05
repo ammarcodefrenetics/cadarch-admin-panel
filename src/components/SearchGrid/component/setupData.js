@@ -150,7 +150,7 @@ export const data = {
         {
             title: 'Action',
             dataIndex: 'action',
-            align: "center",
+            align: "right",
             className: "width100"
         }
     ],
@@ -326,6 +326,8 @@ export const data = {
             title: 'Details',
             dataIndex: 'details',
             className: "width220",
+            ellipsis:true,
+
             sorter: (a, b) => {
                 a = a.details != null ? a.details + '' : "";
                 b = b.details != null ? b.details + '' : "";
@@ -341,7 +343,7 @@ export const data = {
         {
             title: 'Action',
             dataIndex: 'action',
-            align: "center",
+            align: "right",
             className: "width100"
         }
     ],
@@ -458,6 +460,7 @@ export const data = {
             title: 'Details',
             dataIndex: 'details',
             className: "width220",
+            ellipsis:true,
             sorter: (a, b) => {
                 a = a.details != null ? a.details + '' : "";
                 b = b.details != null ? b.details + '' : "";
@@ -473,7 +476,7 @@ export const data = {
         {
             title: 'Action',
             dataIndex: 'action',
-            align: "center",
+            align: "right",
             className: "width100"
         }
     ],
@@ -534,6 +537,7 @@ export const data = {
             title: 'Details',
             dataIndex: 'details',
             className: "width220",
+            ellipsis:true,
             sorter: (a, b) => {
                 a = a.details != null ? a.details + '' : "";
                 b = b.details != null ? b.details + '' : "";
@@ -549,7 +553,7 @@ export const data = {
         {
             title: 'Action',
             dataIndex: 'action',
-            align: "center",
+            align: "right",
             className: "width100"
         }
     ],
@@ -602,7 +606,7 @@ export const data = {
         {
             title: 'Action',
             dataIndex: 'action',
-            align: "center",
+            align: "right",
             className: "width100"
         }
     ],
@@ -626,6 +630,7 @@ export const data = {
             title: 'Details',
             dataIndex: 'details',
             className: "width220",
+            ellipsis:true,
             sorter: (a, b) => {
                 a = a.details != null ? a.details + '' : "";
                 b = b.details != null ? b.details + '' : "";
@@ -635,7 +640,7 @@ export const data = {
         {
             title: 'Action',
             dataIndex: 'action',
-            align: "center",
+            align: "right",
             className: "width100"
         }
     ],
@@ -707,11 +712,13 @@ export const data = {
             title: 'Message',
             dataIndex: 'message',
             className: "width220",
+            ellipsis:true
         },
         {
             title: 'Date & time',
             dataIndex: 'createdAt',
             className: "width100",
+            ellipsis:true,
             sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
             render: function (text, record) {
                 let time = `${new Date(record.createdAt)}`
@@ -722,7 +729,7 @@ export const data = {
         {
             title: 'Action',
             dataIndex: 'action',
-            align: "center",
+            align: "right",
             className: "width100"
         }
     ],

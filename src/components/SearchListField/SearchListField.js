@@ -18,33 +18,45 @@ import { GetUserInfo } from '../../Services/GetUserInfo';
 import { GetDataAPI } from "../../Services/GetDataAPI";
 
 export default function SearchList({ code, apiUrl, isDisabled, popperWidth, mandatory, searchId, ...props }) {
-    const { value,displayOrder,isEdit } = props;
+    const { value,displayOrder,isEdit, existingDependencies ,id} = props;
+    const [dependencies ] = useState(existingDependencies)
+    console.log(existingDependencies,"from props")
     var classes = useStyles();
     const [searchTerm, setSearchTerm] = useState(props.searchTerm);
     const [searchResults, setSearchResults] = useState([]);
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = useState(open && searchResults.length <= 0);
-    useEffect(() => {
-        if (true) {
-            setLoading(true)
-            GetDataAPI(apiUrl).then((result) => {
-                setLoading(false)
-                if (result.responseCode == 1 && result.responseStatus == "success" && result.data.data != null) {
-                    if(isEdit){
-                        setSearchResults(
-                            result.data.data.filter(item => item._id !== value && item.displayOrder < displayOrder).map((item, i) => {
-                                return { id: item._id, value: item.title, diplayOrder: item.diplayOrder };
-                            }));
-                    }
-                    else{
-                        setSearchResults(
-                            result.data.data.filter(item => item._id !== value).map((item, i) => {
-                                return { id: item._id, value: item.title, diplayOrder: item.diplayOrder };
-                            }));
-                    }
+    const loadQuestions = async(dep)=>{
+        setLoading(true)
+        GetDataAPI(apiUrl).then((result) => {
+           
+            if (result.responseCode == 1 && result.responseStatus == "success" && result.data.data != null) {
+                const myArrayFiltered = result.data.data.filter((question) => {
+                    return existingDependencies.every((dependency) => {
+                      return question._id !== dependency.dependsOnQuestion.id
+                    });
+                  });
+                if(isEdit){
+                    
+                    setSearchResults(
+                        myArrayFiltered.filter(item => item._id !== value && item.displayOrder < displayOrder).map((item, i) => {
+                            return { id: item._id, value: item.title, diplayOrder: item.diplayOrder };
+                        }));
                 }
-            });
-        }
+                else{
+                    setSearchResults(
+                        myArrayFiltered.filter(item => item._id !== value).map((item, i) => {
+                            return { id: item._id, value: item.title, diplayOrder: item.diplayOrder };
+                        }));
+                }       
+            }
+            setLoading(false)
+        });
+    }
+    useEffect(() => {
+          
+                loadQuestions()
+           
     }, [searchTerm, value, props.searchTerm, code, searchId]);
     const handleOnChange = (event) => {
         let inputValue = event.target.value;

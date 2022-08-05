@@ -21,7 +21,7 @@ function Profile(props) {
     const [isSaveLoading, setIsSaveLoading] = useState(false)
 
     const [state, setState] = useState({
-        firstName: "", lastName: "", homePhone: "", cellPhone: "",
+        firstName: "", lastName: "", homePhone: "", cellPhone: "+92",
     });
     const [profileImage, setProfileImage] = useState({ file: null, userPhoto: null, userPhotoName: null });
 
@@ -283,7 +283,7 @@ function Profile(props) {
                                 </Grid>
                             </Grid>
 
-                            <Grid container lg={6} md={6} sm={12} style={{margin:'0 auto', marginTop:10}} direction="row">
+                            {/* <Grid container lg={6} md={6} sm={12} style={{margin:'0 auto', marginTop:10}} direction="row">
                                 <Label size={2} lg={4} md={4} sm={4} title="Home Phone" />
 
                                 <Grid item xs={12} sm={6} md={8} lg={6} >
@@ -297,7 +297,7 @@ function Profile(props) {
                                     />
 
                                 </Grid>
-                            </Grid>
+                            </Grid> */}
 
                             <Grid container lg={6} md={6} sm={12} style={{margin:'0 auto', marginTop:10}} direction="row">
                                 <Label size={2} md={4} lg={4} sm={4} title="Cell #" />
@@ -305,11 +305,11 @@ function Profile(props) {
                                 <Grid item xs={12} md={8} sm={6} lg={6} >
 
                                     <InputBaseField
-                                        placeholder="(863) 993-2966"
+                                        placeholder="+92XXXXXXXXX"
                                         onChange={handleCellPhoneChange}
                                         name="cellPhone"
                                         value={state.cellPhone}
-                                        MaxLength="14"
+                                        MaxLength="10"
                                     />
 
                                 </Grid>

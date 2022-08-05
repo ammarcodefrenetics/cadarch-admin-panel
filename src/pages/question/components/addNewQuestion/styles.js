@@ -232,5 +232,12 @@ export default makeStyles(theme => ({
             fontSize:'28px'
         }
     },
-    map: { height: "180px" }
+    map: { height: "180px" },
+    optionDetails:{
+        overflow:'hidden',
+            '&:hover': {
+              overflow:'scroll'
+             },
+    },
+  
 }));
