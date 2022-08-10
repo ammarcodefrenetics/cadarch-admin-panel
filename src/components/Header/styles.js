@@ -213,6 +213,7 @@ export default makeStyles(theme => ({
     },
     userDp: {
         width: 44,
+        height:44,
         borderRadius: "50%",
         border: "1px solid #11284b",
     },

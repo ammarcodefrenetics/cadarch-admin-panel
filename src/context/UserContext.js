@@ -2,8 +2,12 @@
 import { APICall } from '../Services/APICall';
 import { GetDataAPI } from '../Services/APIService';
 import { GetUserInfo } from "../Services/GetUserInfo";
+import { PostDataAPI } from "../Services/PostDataAPI";
+import { UpdateDataAPI } from "../Services/UpdateDataAPI";
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
+
+
 
 
 const initialState = {
@@ -96,7 +100,7 @@ async function loginUser(dispatch, emailaddress, password, history, setIsLoading
             sessionStorage.clear();
             sessionStorage.setItem('server_api_url', baseUrl);
             sessionStorage.setItem('auth_token', response.data.token);
-            sessionStorage.setItem('user_info', JSON.stringify(response.data));
+            sessionStorage.setItem('user_info', JSON.stringify(response.data.user));
             // sessionStorage.removeItem("login_attempts");
 
             //For login
@@ -120,17 +124,17 @@ async function loginUser(dispatch, emailaddress, password, history, setIsLoading
     }
 }
 
-async function forgotPassowrd(emailaddress, history, setIsLoading, setError, setIsSuccess, setReturnMessage, setResetButtonDisalbed) {
+async function forgotPassowrd(phoneNumber, history, setIsLoading, setError, setIsSuccess, setReturnMessage, setResetButtonDisalbed,setActiveTabId) {
     setError(false);
     setIsLoading(true);
 
-    if (!!emailaddress) {
-        let data = {
-            EmailAddress: emailaddress
-        };
+    if (!!phoneNumber) {
+      
         setResetButtonDisalbed(true);
-        var response = await APICall('POST', 'auth/forgotPassword', data);
-        if (response.success) {
+        var response = await PostDataAPI('users/forgotPassword', {model:{cellPhone:phoneNumber}});
+        console.log(response , "response")
+        if (response.responseCode === 1 && response.responseStatus === 'success') {
+            setActiveTabId(2)
             setError(null)
             setIsLoading(false)
             setIsSuccess(true)
@@ -174,30 +178,23 @@ async function validateToken(token, setIsAuthToken, setError, setIsValidToken) {
     }
 }
 
-async function resetPassword(dispatch, token, newPassword, confirmPassword, history, setIsLoading, setError, setIsSuccess, setReturnMessage) {
+async function verifyOtp(otp,phoneNumber, setActiveTabId, setIsLoading, setError, setIsSuccess, setReturnMessage) {
     setError(false);
     setIsLoading(true);
-    if (!!token && !!newPassword && !!confirmPassword) {
-        if (newPassword == confirmPassword) {
-            let data = {
-                Token: token,
-                Password: newPassword,
-                ConfirmPassword: confirmPassword
-            };
-
-            var response = await APICall('POST', 'auth/resetPassword', data);
-            if (response.success) {
+    if (!!otp && !!phoneNumber) {
+            const response = await PostDataAPI('users/verifyotp', {model:{cellPhone:phoneNumber , otp:otp}});
+            console.log(response , " otp")
+            if (response.responseCode === 1 && response.responseStatus === 'success') {
+                setActiveTabId(3)
                 setError(null)
                 setIsLoading(false)
-                setIsSuccess(true);
-                //alert(response.message);
-                setReturnMessage(response.responseMessage)
-                //alert("Password Reset Successfully.")
-                // history.push('/app/login')
+                setIsSuccess(true)
+                setReturnMessage(response.responseMessage);
             }
             else {
                 setError(true);
                 setIsLoading(false);
+                setReturnMessage(response.responseMessage);
             }
         }
         else {
@@ -205,52 +202,53 @@ async function resetPassword(dispatch, token, newPassword, confirmPassword, hist
             setIsLoading(false);
             setReturnMessage("Passwords can't match")
         }
-
-    } else {
-        setIsSuccess(true)
-        setIsLoading(false);
-    }
 }
 
-async function changePassword(dispatch, oldPassword, newPassword, confirmPassword, history, setIsLoading, setError, setIsSuccess, setReturnMessage) {
-
+async function changePassword(userDispatch,oldPassword, newPassword, confirmPassword, history, setIsLoading, setError, setIsSuccess, setReturnMessage,phoneNumber,isForgot) {
+   console.log('got it here' , isForgot , phoneNumber)
     let user = sessionStorage.getItem('user_info');
+    if (!isForgot ? user != null : true) {
+        console.log('old' ,oldPassword , "new" , newPassword , "confirm new" , confirmPassword)
+        let userdata = JSON.parse(user);
 
-    if (user != null) {
-        let userdata = JSON.parse(user).user;
-        let email = userdata.emailAddress;
 
-        if (!!email && !!oldPassword && !!newPassword && !!confirmPassword) {
+        if ( !isForgot ? !!oldPassword && !!newPassword && !!confirmPassword : !!newPassword && !!confirmPassword) {
 
-            if (newPassword == confirmPassword) {
+            if (newPassword === confirmPassword) {
+                console.log('got in update pass')
                 let data = {
-                    EmailAddress: email,
                     OldPassword: oldPassword,
                     NewPassword: newPassword,
                     ConfirmPassword: confirmPassword
                 };
-
-                var response = await APICall('POST', 'auth/changePassword', data);
-                if (response.success) {
-
+                let data2 = {
+                    NewPassword: newPassword,
+                    ConfirmPassword: confirmPassword,
+                    cellPhone:phoneNumber
+                }
+                var response = await UpdateDataAPI(!isForgot ? 'users/changepassword' : 'users/resetpassword' , {model: !isForgot ? data :data2},!isForgot?userdata._id:null);
+                console.log(response ,"resposne")
+                if (response.responseCode === 1 && response.responseStatus === 'success' ) {
                     setError(false);
                     setIsLoading(false);
                     setIsSuccess(true);
-                    setReturnMessage(response.responseMessage);
-                    // alert(response.message);
-                    // history.push('/app/dashboard');
+                    signOut(userDispatch, history)
+                    alert(response.responseMessage);
+                   
+                    
                 }
                 else {
                     setError(true);
                     setIsLoading(false);
                     setIsSuccess(false);
-                    setReturnMessage(response.responseMessage);
+                    // setReturnMessage(response.responseMessage);
+                    alert(response.responseMessage);
                 }
             }
             else {
                 setIsSuccess(false);
                 setIsLoading(false);
-                setReturnMessage("Passwords can't match")
+                // setReturnMessage("Passwords can't match")
             }
 
         } else {
@@ -297,5 +295,8 @@ function signOut(dispatch, history) {
     dispatch({ type: "SIGN_OUT_SUCCESS" });
     history.push("/login");
 }
+function resetPassword(){
+    console.log('hello')
+}
 
-export { UserProvider, useUserState, useUserDispatch, loginUser, forgotPassowrd, validateToken, resetPassword, changePassword, iDMeCallbackToken, signOut };
+export { UserProvider, useUserState, useUserDispatch, loginUser, forgotPassowrd, validateToken,resetPassword, verifyOtp, changePassword, iDMeCallbackToken, signOut };

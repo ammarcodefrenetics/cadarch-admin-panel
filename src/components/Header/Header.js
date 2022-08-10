@@ -113,8 +113,8 @@ const notifications = [
 
 function Header(props) {
 
-    var user = sessionStorage.getItem('user_info');
-    var userdata = JSON.parse(user).user;
+    var userdata = JSON.parse(sessionStorage.getItem('user_info'));
+
 
     // var locationlist = JSON.parse(user).userLocations;
     var locationlist = [{ id: 1, text1: "Location 1" }];
@@ -178,7 +178,7 @@ function Header(props) {
                                 onClick={e => setProfileMenu(e.currentTarget)}
                             >
                                 <img
-                                    src={userdata != null && userdata.photoPath != null ? "." + userdata.photoPath : ProfilePic}
+                                    src={userdata != null && userdata.profilePhoto != null ? "http://localhost:5000"+userdata.profilePhoto.replace(/\\/g, "/").replace('public/', '/') : ProfilePic}
                                     alt="User DP"
                                     className={classes.userDp}
                                     onError={(e) => (e.target.onerror = null, e.target.src = ProfilePic)}
@@ -186,7 +186,7 @@ function Header(props) {
                                 <div className={classes.userProfile}>
                                     <div className={classes.user}>
                                         <span className={classes.userName}>
-                                            {userdata != null ? userdata.fullName : "Melvin B. Price Static"}
+                                            {userdata != null ? userdata.firstName+" "+userdata.lastName : "Melvin B. Price Static"}
                                         </span>
                                         <span
                                             className={classes.userDetails}
@@ -205,7 +205,7 @@ function Header(props) {
 
                 </div>
 
-                <IconButton
+                {/* <IconButton
                     color="inherit"
                     aria-haspopup="true"
                     aria-controls="mail-menu"
@@ -223,7 +223,7 @@ function Header(props) {
                             <img src={BellIcon} alt="Notification" className={classes.notIcon} />
                         </Tooltip>
                     </Badge>
-                </IconButton>
+                </IconButton> */}
 
                 <Menu
                     id="location-menu"
@@ -326,17 +326,17 @@ function Header(props) {
 
                     <MenuItem className={classes.profileMenuItem}>
                         <AccountIcon className={classes.profileMenuIcon} />
-                        <Link className={classes.profileMenuItem} to="/app/updateprofile">Profile</Link>
+                        <Link onClick={() => setProfileMenu(null)} className={classes.profileMenuItem} to="/app/updateprofile">Profile</Link>
                     </MenuItem>
 
                     <MenuItem className={classes.profileMenuItem}>
                         <ChangePasswordIcon className={classes.profileMenuIcon} /> <Link className={classes.profileMenuItem} to="/app/changePassword" onClick={() => setProfileMenu(null)}> Change Password</Link>
                     </MenuItem>
 
-                    <MenuItem className={classes.profileMenuItem}>
+                    {/* <MenuItem className={classes.profileMenuItem}>
                         <MessageOutline className={classes.profileMenuIcon} />
                         <Link className={classes.profileMenuItem} to="/app/messages">Messages</Link>
-                    </MenuItem>
+                    </MenuItem> */}
 
                     <Divider />
 

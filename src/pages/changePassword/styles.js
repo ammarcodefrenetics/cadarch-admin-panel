@@ -141,7 +141,7 @@ export default makeStyles(theme => ({
     width: "100%",
     fontFamily: "Lato",
     backgroundColor: "white",
-    marginBottom: 30,
+    marginTop:30 ,
     border: "1px solid #C4C4C4",
     borderRadius: 5,
   },

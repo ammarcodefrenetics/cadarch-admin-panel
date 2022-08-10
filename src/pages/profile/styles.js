@@ -11,6 +11,7 @@ export default makeStyles((theme) => ({
         display: "block",
         maxHeight: 90,
         margin: 20,
+        cursor:'pointer'
     },
     uploadImageIcon: {
         position: "absolute",

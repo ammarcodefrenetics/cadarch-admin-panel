@@ -3,6 +3,7 @@
 import {
     Grid,
     CircularProgress,
+    Paper,
     Typography,
     Button,
     Fade,
@@ -20,25 +21,40 @@ import useStyles from "./styles";
 import logo from "../../images/logo.png";
 import EmailIcon from "../../images/icons/email-icon.png";
 import PasswordIcon from "../../images/icons/password-icon.png";
-
+import phoneIcon from '../../images/icons/phone.png'
 // context
-import { useUserDispatch, loginUser, forgotPassowrd } from "../../context/UserContext";
+import { useUserDispatch, loginUser, forgotPassowrd, verifyOtp } from "../../context/UserContext";
+import { InputBaseField } from "../../components/InputField/InputField";
+import Avatar from "@material-ui/core/Avatar";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import OtpInput from "react-otp-input";
+import ChangeUserPassword from "../changePassword/ChangeUserPassword";
+
+
 
 function Login(props) {
     var classes = useStyles();
+
     // global
     var userDispatch = useUserDispatch();
     // local
-    var [isLoading, setIsLoading] = useState(false);
-    var [error, setError] = useState(false);
-    var [isSuccess, setIsSuccess] = useState(false);
-    var [returnMessage, setReturnMessage] = useState("");
-    var [activeTabId, setActiveTabId] = useState(0);
-    var [loginValue, setLoginValue] = useState("");
-    var [passwordValue, setPasswordValue] = useState("");
-    var [forgetPasswordValue, setForgetPasswordValue] = useState("");
-    var [validateEmail, setValidateEmail] = useState(false);
-    var [resetButtonDisalbed, setResetButtonDisalbed] = useState(false);
+    let [isLoading, setIsLoading] = useState(false);
+    let [error, setError] = useState(false);
+    let [isSuccess, setIsSuccess] = useState(false);
+    let [returnMessage, setReturnMessage] = useState("");
+    let [activeTabId, setActiveTabId] = useState(0);
+    let [loginValue, setLoginValue] = useState("");
+    let [passwordValue, setPasswordValue] = useState("");
+    let [forgetPasswordValue, setForgetPasswordValue] = useState("");
+    let [validateEmail, setValidateEmail] = useState(false);
+    let [validatePhoneNumber, setValidatePhoneNumber] = useState(false);
+    let [phoneNumber, setPhoneNumber] = useState('');
+    let [resetButtonDisalbed, setResetButtonDisalbed] = useState(false);
+    const [pass , setPass] = useState('')
+    const [confPass , setConfPass] = useState('')
+    const [otp, setOtp] = useState('')
+    const [validatePass, setValidatePass] = useState(false);
+    const [validateConfPass, setValidateConfPass] = useState(false);
 
     useEffect(() => {
 
@@ -61,6 +77,16 @@ function Login(props) {
         else
             setValidateEmail(false);
     };
+    const onBlurPhoneNumber = (e) => {
+        let phoneNumber = e.target.value
+        if (!phoneNumber || !phoneNumber.length === 13 || !/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/.test(phoneNumber)) {
+            setValidatePhoneNumber(true);
+        }
+        else {
+            setValidatePhoneNumber(false);
+        };
+    }
+
 
     const onTabChange = (value) => {
 
@@ -124,7 +150,7 @@ function Login(props) {
                                     <Typography variant="h1" className={classes.loginTitle}>
                                         Login
                                     </Typography>
-                                    
+
                                     <InputBase
                                         id="EmailAddress"
                                         startAdornment={
@@ -229,41 +255,42 @@ function Login(props) {
                                         Forgot your CADARCH Password ?
                                     </Typography>
                                     <Typography className={classes.subTitle01}>
-                                        We will send you a password reset via email.
+                                        We will send you OTP via sms.
                                     </Typography>
-                                    <InputBase
+                                    <InputBaseField
                                         id="resetEmail"
                                         startAdornment={
                                             <InputAdornment position="start">
-                                                <img src={EmailIcon} alt="icon" className={classes.emailIcon} />
+                                                <img src={phoneIcon} alt="icon" className={classes.emailIcon} />
                                             </InputAdornment>
                                         }
-                                        value={forgetPasswordValue}
+                                        value={phoneNumber}
                                         className={classes.textField}
-                                        onChange={e => setForgetPasswordValue(e.target.value)}
+                                        onChange={e => setPhoneNumber(e.target.value)}
                                         margin="none"
-                                        placeholder="Email Address"
-                                        type="email"
-                                        onBlur={onBlurEmail}
+                                        placeholder="+92xxxxxxxxxx"
+                                        type="text"
+                                        onBlur={onBlurPhoneNumber}
                                         required
+                                        MaxLength="13"
                                         fullWidth
                                     />
 
-                                    {validateEmail ? (
-                                        <Fade in={validateEmail}>
+                                    {validatePhoneNumber ? (
+                                        <Fade in={validatePhoneNumber}>
                                             <Typography color="secondary" className={classes.errorMessage}>
-                                                Invalid email address
+                                                Invalid phone number
                                             </Typography>
                                         </Fade>) : ("")
                                     }
                                     <Typography className={classes.subTitle02}>
-                                        If you do not have access to your email, please contact your system administrator to have your password reset.
+                                        If you do not have access to your phone, please contact your system administrator to have your password reset.
                                     </Typography>
 
                                     {error ? (
                                         <Fade in={error}>
                                             <Typography color="secondary" className={classes.errorMessage}>
-                                                Email Not Found
+                                                Phone number not found
                                             </Typography>
                                         </Fade>) : ("")
                                     }
@@ -293,20 +320,26 @@ function Login(props) {
                                         ) : (
                                             <Button
                                                 disabled={
-                                                    (forgetPasswordValue.length === 0 || resetButtonDisalbed == true || validateEmail == true)
+                                                    !validatePhoneNumber && phoneNumber.length !== 13 ? true : false
                                                 }
                                                 className={classes.loginBtn}
                                                 size="large"
-                                                onClick={() =>
-                                                    forgotPassowrd(
-                                                        forgetPasswordValue,
-                                                        props.history,
-                                                        setIsLoading,
-                                                        setError,
-                                                        setIsSuccess,
-                                                        setReturnMessage,
-                                                        setResetButtonDisalbed
-                                                    )}
+                                                onClick={() => {
+                                                    if (!validatePhoneNumber) {
+                                                        forgotPassowrd(
+                                                            phoneNumber,
+                                                            props.history,
+                                                            setIsLoading,
+                                                            setError,
+                                                            setIsSuccess,
+                                                            setReturnMessage,
+                                                            setResetButtonDisalbed,
+                                                            setActiveTabId
+                                                        )
+                                                    }
+                                                    else return
+                                                }
+                                                }
                                             >
                                                 Reset Password
                                             </Button>
@@ -316,9 +349,114 @@ function Login(props) {
                                 </Grid>
                             </React.Fragment>
                         )}
+                        {activeTabId === 2 && (
+                            <React.Fragment>
+                                <Grid className={classes.inBox}
+                                    container
+                                    direction="row"
+                                    align="left"
+                                >
+                                    {/* <Typography variant="h2" align="center" className={classes.loginTitle}>
+                                        OTP Verification
+                                    </Typography> */}
+                                    <Grid item container justify="center" style={{ marginTop: 40 }}>
+                                        <Grid item container alignItems="center" direction="column">
+                                            <Grid item>
+                                                <Avatar className={classes.avatar}>
+                                                    <LockOutlinedIcon />
+                                                </Avatar>
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography component="h1" variant="h5">
+                                                    Verification Code
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12} textAlign="center" style={{ marginTop: 40 }}>
+                                        <Paper elevation={0}>
+                                            <Typography variant="h6">
+                                                Please enter the verification code sent to your mobile
+                                            </Typography>
+                                        </Paper>
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        container
+                                        justify="center"
+                                        alignItems="center"
+                                        direction="column"
+                                    >
+                                        <Grid item spacing={3} justify="center" style={{ marginTop: 30 }}>
+                                            <OtpInput
+                                                value={otp}
+                                                onChange={(e) => setOtp(e)}
+                                                separator={
+                                                    <span>
+                                                        <strong>.</strong>
+                                                    </span>
+                                                }
+                                                inputStyle={{
+                                                    width: "3rem",
+                                                    height: "3rem",
+                                                    margin: "0 1rem",
+                                                    fontSize: "2rem",
+                                                    borderRadius: 4,
+                                                    border: "1px solid rgba(0,0,0,0.3)"
+                                                }}
+                                            />
+                                        </Grid>
+
+                                        <div className={classes.formButtons}>
+
+                                            {isLoading ? (
+                                                <CircularProgress size={26} className={classes.loginLoader} />
+                                            ) : (
+                                                <Button
+                                                    onClick={() => {
+                                                        if (otp.length === 4) {
+                                                            console.log(phoneNumber, " before calling verify otp")
+                                                            verifyOtp(
+                                                                otp,
+                                                                phoneNumber,
+                                                                setActiveTabId,
+                                                                setIsLoading,
+                                                                setError,
+                                                                setIsSuccess,
+                                                                setReturnMessage,
+                                                                setResetButtonDisalbed,
+                                                                setActiveTabId
+                                                            )
+                                                        }
+                                                        else return
+                                                    }}
+                                                    type="submit"
+                                                    className={classes.loginBtn}
+                                                    size="large"
+                                                    fullWidth
+                                                    disabled={otp.len !== 4 && isLoading ? true : false}
+                                                    style={{ marginTop: 30, width: '100%' }}
+                                                >
+                                                    Verify
+                                                </Button>
+                                            )}
+                                        </div>
+
+                                    </Grid>
+                                </Grid>
+                            </React.Fragment>
+                        )
+                        }
+
+                        {activeTabId === 3 && (
+                           <ChangeUserPassword isForgot={true} phoneNumber={phoneNumber}/>
+                        )}
                         <>
                         </>
+
                     </div>
+
                     <>
                     </>
                     <Typography className={classes.footerContent}>
@@ -333,8 +471,6 @@ function Login(props) {
 
             </Grid>
         </Card>
-
-
     );
 }
 

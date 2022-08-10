@@ -98,7 +98,10 @@ export default function ChangeUserPassword(props) {
 
     return (
         <>
-            <PageTitle title={title} />
+            {!props.isForgot ? <PageTitle title={title} /> :
+                <Typography variant="h1" className={classes.loginTitle}>
+                    Enter New Password
+                </Typography>}
             <Container maxWidth={false}>
                 <Grid
                     container
@@ -118,26 +121,29 @@ export default function ChangeUserPassword(props) {
                                     direction="row"
                                     align="left"
                                 >
-                                    <Typography variant="h1" className={classes.loginTitle}>
+                                    {/* <Typography variant="h1" className={classes.loginTitle}>
                                         Change Password
-                                    </Typography>
+                                    </Typography> */}
 
-                                    <InputBase
-                                        id="oldPassword"
-                                        startAdornment={
-                                            <InputAdornment position="start">
-                                                <img src={PasswordIcon} alt="icon" className={classes.passwordIcon} />
-                                            </InputAdornment>
-                                        }
-                                        value={oldPasswordValue}
-                                        className={classes.textField}
-                                        onChange={e => setOldPasswordValue(e.target.value)}
-                                        margin="none"
-                                        placeholder="Old Password"
-                                        type="password"
-                                        fullWidth
-                                        required
-                                    />
+                                    {!props.isForgot ? (
+                                        <InputBase
+
+                                            id="oldPassword"
+                                            startAdornment={
+                                                <InputAdornment position="start">
+                                                    <img src={PasswordIcon} alt="icon" className={classes.passwordIcon} />
+                                                </InputAdornment>
+                                            }
+                                            value={oldPasswordValue}
+                                            className={classes.textField}
+                                            onChange={e => setOldPasswordValue(e.target.value)}
+                                            margin="none"
+                                            placeholder="Old Password"
+                                            type="password"
+                                            fullWidth
+                                            required
+                                        />
+                                    ) : null}
                                     <InputBase
                                         id="NewPassword"
                                         startAdornment={
@@ -203,7 +209,7 @@ export default function ChangeUserPassword(props) {
                                         value={confirmPasswordValue}
                                         className={classes.textField}
                                         onChange={e => setConfirmPasswordValue(e.target.value)}
-                                        margin="none"
+
                                         placeholder="Confirm Password"
                                         type="password"
                                         onBlur={onBlurConfPassword}
@@ -242,26 +248,32 @@ export default function ChangeUserPassword(props) {
                                         ) : (
                                             <Button
                                                 disabled={
-                                                    oldPasswordValue.length === 0 || newPasswordValue.length === 0 || confirmPasswordValue.length === 0
+                                                   !props.isForgot ? oldPasswordValue.length === 0 || newPasswordValue.length === 0 || confirmPasswordValue.length === 0
+                                                   : newPasswordValue.length === 0 || confirmPasswordValue.length === 0
                                                 }
-                                                onClick={() =>
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    console.log(props.isForgot , "________" , props.phoneNumber)
                                                     changePassword(
                                                         userDispatch,
                                                         oldPasswordValue,
                                                         newPasswordValue,
                                                         confirmPasswordValue,
-                                                        props.history,
+                                                        history,
                                                         setIsLoading,
                                                         setError,
                                                         setIsSuccess,
-                                                        setReturnMessage
+                                                        setReturnMessage,
+                                                        props.phoneNumber,
+                                                        props.isForgot
                                                     )
+                                                }
                                                 }
 
                                                 className={classes.loginBtn}
                                                 size="large"
                                             >
-                                                Change Password
+                                                {!props.isForgot ? 'Change Password' : 'Save Password'}
                                             </Button>
                                         )}
 
@@ -279,7 +291,7 @@ export default function ChangeUserPassword(props) {
                         align="flex-end"
                     >
 
-                        <div style={{ width: "100%", marginTop: 100, marginLeft: 25 }}>
+                        <div style={{ width: "100%", marginTop: `${props.isForgot ? 85 : 100}`, marginLeft: 25 }}>
                             <Grid container xs={12} sm={12} lg={12} xl={12} className={classes.pRelative}>
                                 <Grid xs={3} sm={2} md={2} lg={1} xl={1}></Grid >
                                 <div className={classes.pAbsolute}>
@@ -309,7 +321,7 @@ export default function ChangeUserPassword(props) {
                                 </Grid>
                             </Grid>
                             <Grid container xs={12} sm={12} lg={12} xl={12} className={classes.pRelative}>
-                                <Grid xs={3} sm={2} md={2} lg={1} xl={1}></Grid >
+                                <Grid xs={3} sm={2} md={2} lg={1} xl={1}></Grid>
                                 <div className={classes.pAbsolute}>
                                     {
                                         newPasswordValue.length > 0 && isPasswordPatternMatch ?

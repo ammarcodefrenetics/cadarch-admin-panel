@@ -270,4 +270,7 @@ export default makeStyles(theme => ({
         fontSize: 14,
         marginBottom: 0,
     },
+    emailIcon:{
+        width:25
+    }
 }));
