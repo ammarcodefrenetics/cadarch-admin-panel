@@ -194,13 +194,14 @@ async function verifyOtp(otp,phoneNumber, setActiveTabId, setIsLoading, setError
             else {
                 setError(true);
                 setIsLoading(false);
+                console.log('11111111111' , response.responseMessage)
                 setReturnMessage(response.responseMessage);
             }
         }
         else {
             setIsSuccess(false);
             setIsLoading(false);
-            setReturnMessage("Passwords can't match")
+            setReturnMessage("Otp didn't match")
         }
 }
 

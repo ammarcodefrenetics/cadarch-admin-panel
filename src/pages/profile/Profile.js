@@ -7,6 +7,7 @@ import {
     Grid,
     Paper,
     Tooltip,
+    InputAdornment
 } from '@material-ui/core';
 
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
@@ -23,7 +24,7 @@ import { UpdateDataAPI } from '../../Services/UpdateDataAPI';
 function Profile(props) {
     var classes = useStyles();
     const { showMessage } = props;
-
+    const code = '+92'
     const [loading, setLoading] = useState({ isLoading: false, isSaving: false })
     const [editMode, setEditMode] = useState(false)
 
@@ -31,7 +32,6 @@ function Profile(props) {
         userId: '', firstName: "", lastName: "", cellPhone: '', profilePhoto: ''
     });
 
-    const code = "+92"
     const [profileImage, setProfileImage] = useState({ file: null, userPhoto: null, userPhotoName: null });
 
     const [errorMessages, setErrorMessages] = useState({ errorFirstName: false, errorLastName: false, errorCellPhone: false })
@@ -61,88 +61,88 @@ function Profile(props) {
         }
 
     }
-    const handleHomePhoneChange = e => {
+    // const handleHomePhoneChange = e => {
 
-        if (e.nativeEvent.data != "e") {
+    //     if (e.nativeEvent.data != "e") {
 
-            if (e.nativeEvent.data != null || e.target.value != "") {
-                // for fomatting
-                const re = /^[0-9\b]+$/;
-                e.target.value = e.target.value.replace(' ', '').replace('(', '').replace(')', '').replace('-', '');
-                const { name, value } = e.target;
-                if ((e.target.value === '' || re.test(e.target.value))) {
+    //         if (e.nativeEvent.data != null || e.target.value != "") {
+    //             // for fomatting
+    //             const re = /^[0-9\b]+$/;
+    //             e.target.value = e.target.value.replace(' ', '').replace('(', '').replace(')', '').replace('-', '');
+    //             const { name, value } = e.target;
+    //             if ((e.target.value === '' || re.test(e.target.value))) {
 
-                    var cleaned = ('' + e.target.value).replace(/\D/g, '')
-                    var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/)
-                    if (match) {
-                        var intlCode = (match[1] ? '+1 ' : ''),
-                            number = [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('');
+    //                 var cleaned = ('' + e.target.value).replace(/\D/g, '')
+    //                 var match = cleaned.match(/^-(1|)?(\d{3})(\d{3})(\d{4})$/)
+    //                 if (match) {
+    //                     var intlCode = (match[1] ? '+1 ' : ''),
+    //                         number = [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('');
 
-                        setState(prevState => ({
-                            ...prevState,
-                            [name]: number
-                        }));
+    //                     setState(prevState => ({
+    //                         ...prevState,
+    //                         [name]: number
+    //                     }));
 
-                        setErrorMessages(prevState => ({
-                            ...prevState,
-                            errorPhoneLength: false
-                        }));
+    //                     setErrorMessages(prevState => ({
+    //                         ...prevState,
+    //                         errorPhoneLength: false
+    //                     }));
 
-                        return;
-                    }
+    //                     return;
+    //                 }
 
-                    setState(prevState => ({
-                        ...prevState,
-                        [name]: value
-                    }));
-                }
-                else {
-                    if (!re.test(e.target.value)) {
-                        e.preventDefault();
-                    }
+    //                 setState(prevState => ({
+    //                     ...prevState,
+    //                     [name]: value
+    //                 }));
+    //             }
+    //             else {
+    //                 if (!re.test(e.target.value)) {
+    //                     e.preventDefault();
+    //                 }
 
-                }
-            }
-            else {
+    //             }
+    //         }
+    //         else {
 
-                const { name, value } = e.target;
-                setState(prevState => ({
-                    ...prevState,
-                    [name]: value
-                }));
+    //             const { name, value } = e.target;
+    //             setState(prevState => ({
+    //                 ...prevState,
+    //                 [name]: value
+    //             }));
 
-                if (e.target.value != "") {
+    //             if (e.target.value != "") {
 
-                    setErrorMessages(prevState => ({
-                        ...prevState,
-                        errorPhoneLength: true
-                    }));
-                }
-                else {
-                    setErrorMessages(prevState => ({
-                        ...prevState,
-                        errorPhoneLength: false
-                    }));
-                }
-            }
+    //                 setErrorMessages(prevState => ({
+    //                     ...prevState,
+    //                     errorPhoneLength: true
+    //                 }));
+    //             }
+    //             else {
+    //                 setErrorMessages(prevState => ({
+    //                     ...prevState,
+    //                     errorPhoneLength: false
+    //                 }));
+    //             }
+    //         }
 
-        }
-        else
-            e.preventDefault();
+    //     }
+    //     else
+    //         e.preventDefault();
 
-    }
+    // }
     const handleCellPhoneChange = e => {
         e.preventDefault()
         // for fomatting
-       
+
         const { name, value } = e.target;
-        
-            setState((prev) => ({
-                ...prev,
-                [name]: value
-            }))
-   
-      
+
+        setState((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+
+
     }
     const validateProfile = (isValidated) => {
         //option Validt
@@ -171,7 +171,7 @@ function Profile(props) {
                 errorLastName: false
             }));
         }
-        if (!state.cellPhone || state.cellPhone.length < 13 ||  !/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/.test(state.cellPhone)) {
+        if (!state.cellPhone || state.cellPhone.length < 10 || !/^-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/.test(state.cellPhone)) {
             setErrorMessages(prevState => ({
                 ...prevState,
                 errorCellPhone: true
@@ -195,7 +195,7 @@ function Profile(props) {
             let postData = {
                 firstName: state.firstName,
                 lastName: state.lastName,
-                cellPhone: state.cellPhone,
+                cellPhone: '+92' + state.cellPhone,
                 profilePhoto: state.profilePhoto
             };
             formData.append("model", JSON.stringify(postData));
@@ -208,6 +208,7 @@ function Profile(props) {
                 console.log('result', result);
                 if (result.responseCode == 1 && result.responseStatus == "success") {
                     console.log(result.data, "logging data")
+                    result.data.cellPhone = result.data.cellPhone.slice(3)
                     sessionStorage.setItem('user_info', JSON.stringify(result.data))
                     showMessage("Success", result.responseMessage, "success", 3000);
                     setEditMode(false)
@@ -227,70 +228,70 @@ function Profile(props) {
             <PageTitle title="Update Profile" />
 
             <Container maxWidth={false}>
-                    <Grid container >
+                <Grid container >
 
-                        <FormGroupTitle>Profile:</FormGroupTitle>
-                        <Grid item xs={12} sm={12} md={12} lg={12}>
-                            <Card style={{
-                                padding: '2 0',
-                                margin: '0 auto',
-                                border: "1px solid #E8E8E8",
-                                borderRadius: "10px",
-                                maxWidth: 500,
-                                textAlign: 'center',
-                                position: 'relative'
+                    <FormGroupTitle>Profile:</FormGroupTitle>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                        <Card style={{
+                            padding: '2 0',
+                            margin: '0 auto',
+                            border: "1px solid #E8E8E8",
+                            borderRadius: "10px",
+                            maxWidth: 500,
+                            textAlign: 'center',
+                            position: 'relative'
 
 
-                            }}
-                                elevation={3}
-                            >
-                                <Card style={{ position: 'absolute', cursor: 'pointer', right: 5, top: 5, height: 25, width: 25, borderRadius: 5, padding: 5, display: 'flex', alignItems: 'center', justifyContent: 'center' }} elevation={3}>
-                                   <Tooltip title="Edit Profile">
-                                   <img onClick={() => setEditMode(!editMode)} style={{ width: '15px' }} src={editIcon} alt='edit' />
-                                   </Tooltip> 
-                                </Card>
-                                <Grid item style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                        }}
+                            elevation={3}
+                        >
+                            <Card style={{ position: 'absolute', cursor: 'pointer', right: 5, top: 5, height: 25, width: 25, borderRadius: 5, padding: 5, display: 'flex', alignItems: 'center', justifyContent: 'center' }} elevation={3}>
+                                <Tooltip title="Edit Profile">
+                                    <img onClick={() => setEditMode(!editMode)} style={{ width: '15px' }} src={editIcon} alt='edit' />
+                                </Tooltip>
+                            </Card>
+                            <Grid item style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 
-                                    <Grid container lg={12} direction="row" >
-                                        <Grid style={{ margin: '0 auto', marginBottom: 10 }} item>
-                                            <Grid container justify="center" justify-content='center'>
-                                                <label htmlFor="fileUploadField" className={classes.uploadImageLabel}>
-                                                    {profileImage.file || state.profilePhoto ?
-                                                        <img style={editMode? {cursor:'pointer'}:{cursor:'no-drop'}} id='profileImgSource' src={profileImage.file != null ? profileImage.file : "http://localhost:5000" + state.profilePhoto.replace(/\\/g, "/").replace('public/', '/')} alt='' className={classes.uploadImage} />
-                                                        : <div className={classes.uploadImageBox}></div>
-                                                    }
-                                                    <AddAPhotoIcon style={editMode? {cursor:'pointer'}:{cursor:'no-drop'}} className={classes.uploadImageIcon} />
-                                                </label>
-                                                <form>
+                                <Grid container lg={12} direction="row" >
+                                    <Grid style={{ margin: '0 auto', marginBottom: 10 }} item>
+                                        <Grid container justify="center" justify-content='center'>
+                                            <label htmlFor="fileUploadField" className={classes.uploadImageLabel}>
+                                                {profileImage.file || state.profilePhoto ?
+                                                    <img style={editMode ? { cursor: 'pointer' } : { cursor: 'no-drop' }} id='profileImgSource' src={profileImage.file != null ? profileImage.file : "http://localhost:5000" + state.profilePhoto.replace(/\\/g, "/").replace('public/', '/')} alt='' className={classes.uploadImage} />
+                                                    : <div className={classes.uploadImageBox}></div>
+                                                }
+                                                <AddAPhotoIcon style={editMode ? { cursor: 'pointer' } : { cursor: 'no-drop' }} className={classes.uploadImageIcon} />
+                                            </label>
+                                            <form>
 
-                                                    <div>
-                                                        {editMode ? <input type="file" id="fileUploadField"  className={classes.inputFile} onChange={uploadSingleFile} accept=".png, .jpg, .jpeg" />
-                                                            : null}
-                                                    </div>
+                                                <div>
+                                                    {editMode ? <input type="file" id="fileUploadField" className={classes.inputFile} onChange={uploadSingleFile} accept=".png, .jpg, .jpeg" />
+                                                        : null}
+                                                </div>
 
-                                                </form>
-                                            </Grid>
+                                            </form>
                                         </Grid>
                                     </Grid>
+                                </Grid>
 
-                                    <Grid style={{ margin: '0 auto', marginTop: 10 }} container direction="row">
-                                        <Label size={2} lg={4} md={4} sm={4} title="First Name" />
-                                        <Grid item xs={12} sm={6} lg={6} md={8}>
-                                            <InputBaseField
-                                                placeholder="First Name"
-                                                onChange={handleChange}
-                                                type="string"
-                                                name="firstName"
-                                                value={state.firstName}
-                                                MaxLength="50"
-                                                IsDisabled={editMode ? false : true}
-                                            />
-                                            {errorMessages.errorFirstName && (<ErrorMessage >
-                                                Please enter first name
-                                            </ErrorMessage>)}
-                                        </Grid>
+                                <Grid style={{ margin: '0 auto', marginTop: 10, paddingLeft: 5, paddingRight: 5 }} container direction="row">
+                                    <Label size={2} lg={4} md={4} sm={4} xs={12} title="First Name" />
+                                    <Grid item sm={6} lg={6} md={6} xs={12} >
+                                        <InputBaseField
+                                            placeholder="First Name"
+                                            onChange={handleChange}
+                                            type="string"
+                                            name="firstName"
+                                            value={state.firstName}
+                                            MaxLength="50"
+                                            IsDisabled={editMode ? false : true}
+                                        />
+                                        {errorMessages.errorFirstName && (<ErrorMessage >
+                                            Please enter first name
+                                        </ErrorMessage>)}
                                     </Grid>
-                                    {/* 
+                                </Grid>
+                                {/* 
                             <Grid lg={6} md={6} sm={12} style={{margin:'0 auto', marginTop:10}} container direction="row">
                                 <Label size={2} md={4} lg={4} sm={4} title="Middle Name" />
 
@@ -306,26 +307,26 @@ function Profile(props) {
                                 </Grid>
                             </Grid> */}
 
-                                    <Grid style={{ margin: '0 auto', marginTop: 10 }} container direction="row">
-                                        <Label size={2} lg={4} md={4} sm={4} title="Last Name" />
+                                <Grid style={{ margin: '0 auto', marginTop: 10, paddingLeft: 5, paddingRight: 5 }} container direction="row">
+                                    <Label size={2} lg={4} md={4} sm={4} title="Last Name" />
 
-                                        <Grid item xs={12} sm={6} md={8} lg={6} >
-                                            <InputBaseField
-                                                placeholder="Last Name"
-                                                onChange={handleChange}
-                                                type="string"
-                                                name="lastName"
-                                                value={state.lastName}
-                                                MaxLength="50"
-                                                IsDisabled={editMode ? false : true}
-                                            />
-                                            {errorMessages.errorLastName && (<ErrorMessage >
-                                                Please enter last name
-                                            </ErrorMessage>)}
-                                        </Grid>
+                                    <Grid item xs={12} sm={6} md={6} lg={6} >
+                                        <InputBaseField
+                                            placeholder="Last Name"
+                                            onChange={handleChange}
+                                            type="string"
+                                            name="lastName"
+                                            value={state.lastName}
+                                            MaxLength="50"
+                                            IsDisabled={editMode ? false : true}
+                                        />
+                                        {errorMessages.errorLastName && (<ErrorMessage >
+                                            Please enter last name
+                                        </ErrorMessage>)}
                                     </Grid>
+                                </Grid>
 
-                                    {/* <Grid container lg={6} md={6} sm={12} style={{margin:'0 auto', marginTop:10}} direction="row">
+                                {/* <Grid container lg={6} md={6} sm={12} style={{margin:'0 auto', marginTop:10}} direction="row">
                                 <Label size={2} lg={4} md={4} sm={4} title="Home Phone" />
 
                                 <Grid item xs={12} sm={6} md={8} lg={6} >
@@ -341,47 +342,54 @@ function Profile(props) {
                                 </Grid>
                             </Grid> */}
 
-                                    <Grid container style={{ margin: '0 auto', marginTop: 10 }} direction="row">
-                                        <Label size={2} md={4} lg={4} sm={4} title="Cell #" />
+                                <Grid container style={{ margin: '0 auto', marginTop: 10, paddingLeft: 5, paddingRight: 5 }} direction="row">
+                                    <Label size={2} md={4} lg={4} sm={4} title="Cell #" />
 
-                                        <Grid item xs={12} md={8} sm={6} lg={6} >
-                                            <InputBaseField
-                                                placeholder="+92XXXXXXXXX"
-                                                onChange={handleCellPhoneChange}
-                                                name="cellPhone"
-                                                value={state.cellPhone}
-                                                MaxLength="13"
-                                                IsDisabled={editMode ? false : true}
-                                            />
-                                            {errorMessages.errorCellPhone && (<ErrorMessage >
-                                                +92xxxxxxxxxx please enter number in this formate
-                                            </ErrorMessage>)}
+                                    <Grid item xs={12} md={6} sm={6} lg={6}>
 
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid style={{ margin: '0 auto', marginBottom: 10, marginTop: 10 }} container direction="row">
-
-
-                                        <Grid style={{ margin: '0 auto', textAlign: 'center' }} item xs={12} sm={12} md={12} lg={6} >
-
-                                            {
-                                                loading.isSaving ?
-                                                    <FormBtn id="loadingSave" disabled={false} size="medium">Save</FormBtn>
-                                                    : <FormBtn id="save" disabled={editMode ? false : true} onClick={handleSave} size="medium" >Save</FormBtn>
+                                        <InputBaseField
+                                            startAdornment={
+                                                <InputAdornment position="start">
+                                                    <p style={{ cursor: 'not-allowed', paddingLeft: 5 }}>+92</p>
+                                                </InputAdornment>
                                             }
+                                            placeholder="3XXXXXXXX"
+                                            onChange={handleCellPhoneChange}
+                                            name="cellPhone"
+                                            value={state.cellPhone}
+                                            MaxLength="10"
+                                            IsDisabled={editMode ? false : true}
 
-                                            <FormBtn onClick={() => setEditMode(false)} disabled={editMode ? false : true} id='reset' btnType='reset' >Cancel</FormBtn>
+                                        />
+                                        {errorMessages.errorCellPhone && (<ErrorMessage >
+                                            3xxxxxxxxx please enter number in this formate
+                                        </ErrorMessage>)}
 
-                                        </Grid>
                                     </Grid>
                                 </Grid>
 
-                            </Card>
+                                <Grid style={{ margin: '0 auto', marginBottom: 10, marginTop: 10 }} container direction="row">
 
-                        </Grid>
+
+                                    <Grid style={{ margin: '0 auto', textAlign: 'center' }} item xs={12} sm={12} md={12} lg={6} >
+
+                                        {
+                                            loading.isSaving ?
+                                                <FormBtn id="loadingSave" disabled={false} size="medium">Save</FormBtn>
+                                                : <FormBtn id="save" disabled={editMode ? false : true} onClick={handleSave} size="medium" >Save</FormBtn>
+                                        }
+
+                                        <FormBtn onClick={() => setEditMode(false)} disabled={editMode ? false : true} id='reset' btnType='reset' >Cancel</FormBtn>
+
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                        </Card>
 
                     </Grid>
+
+                </Grid>
             </Container>
         </>
     )

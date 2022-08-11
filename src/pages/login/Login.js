@@ -50,8 +50,8 @@ function Login(props) {
     let [validatePhoneNumber, setValidatePhoneNumber] = useState(false);
     let [phoneNumber, setPhoneNumber] = useState('');
     let [resetButtonDisalbed, setResetButtonDisalbed] = useState(false);
-    const [pass , setPass] = useState('')
-    const [confPass , setConfPass] = useState('')
+    const [pass, setPass] = useState('')
+    const [confPass, setConfPass] = useState('')
     const [otp, setOtp] = useState('')
     const [validatePass, setValidatePass] = useState(false);
     const [validateConfPass, setValidateConfPass] = useState(false);
@@ -79,7 +79,7 @@ function Login(props) {
     };
     const onBlurPhoneNumber = (e) => {
         let phoneNumber = e.target.value
-        if (!phoneNumber || !phoneNumber.length === 13 || !/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/.test(phoneNumber)) {
+        if (!phoneNumber || !phoneNumber.length === 10 || !/^-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/.test(phoneNumber)) {
             setValidatePhoneNumber(true);
         }
         else {
@@ -260,19 +260,19 @@ function Login(props) {
                                     <InputBaseField
                                         id="resetEmail"
                                         startAdornment={
-                                            <InputAdornment position="start">
-                                                <img src={phoneIcon} alt="icon" className={classes.emailIcon} />
+                                            <InputAdornment style={{ cursor: 'not-allowed' }} position="start">
+                                                <p>+92</p>
                                             </InputAdornment>
                                         }
                                         value={phoneNumber}
                                         className={classes.textField}
                                         onChange={e => setPhoneNumber(e.target.value)}
                                         margin="none"
-                                        placeholder="+92xxxxxxxxxx"
+                                        placeholder="3xxxxxxxxx"
                                         type="text"
                                         onBlur={onBlurPhoneNumber}
                                         required
-                                        MaxLength="13"
+                                        MaxLength="10"
                                         fullWidth
                                     />
 
@@ -320,14 +320,14 @@ function Login(props) {
                                         ) : (
                                             <Button
                                                 disabled={
-                                                    !validatePhoneNumber && phoneNumber.length !== 13 ? true : false
+                                                    !validatePhoneNumber && phoneNumber.length !== 10 ? true : false
                                                 }
                                                 className={classes.loginBtn}
                                                 size="large"
                                                 onClick={() => {
                                                     if (!validatePhoneNumber) {
                                                         forgotPassowrd(
-                                                            phoneNumber,
+                                                            '+92' + phoneNumber,
                                                             props.history,
                                                             setIsLoading,
                                                             setError,
@@ -406,10 +406,16 @@ function Login(props) {
                                                     border: "1px solid rgba(0,0,0,0.3)"
                                                 }}
                                             />
+                                            {error ? (
+                                                <Fade style={{marginTop:5}} in={error}>
+                                                    <Typography color="secondary" className={classes.errorMessage}>
+                                                        {returnMessage}
+                                                    </Typography>
+                                                </Fade>) : ("")
+                                            }
                                         </Grid>
 
                                         <div className={classes.formButtons}>
-
                                             {isLoading ? (
                                                 <CircularProgress size={26} className={classes.loginLoader} />
                                             ) : (
@@ -419,7 +425,7 @@ function Login(props) {
                                                             console.log(phoneNumber, " before calling verify otp")
                                                             verifyOtp(
                                                                 otp,
-                                                                phoneNumber,
+                                                                "+92" + phoneNumber,
                                                                 setActiveTabId,
                                                                 setIsLoading,
                                                                 setError,
@@ -450,7 +456,7 @@ function Login(props) {
                         }
 
                         {activeTabId === 3 && (
-                           <ChangeUserPassword isForgot={true} phoneNumber={phoneNumber}/>
+                            <ChangeUserPassword isForgot={true} phoneNumber={phoneNumber} />
                         )}
                         <>
                         </>

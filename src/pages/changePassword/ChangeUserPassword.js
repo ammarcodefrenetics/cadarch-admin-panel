@@ -25,7 +25,8 @@ import AppImg from "../../images/app-image.png";
 
 import SuccessIcon from "../../images/icons/successIcon.png";
 import CloseIcon from "../../images/icons/close.png";
-
+import VisibilityIcon from '../../images/icons/visibility.png';
+import VisibilityOffIcon from '../../images/icons/visibility-off.png';
 
 
 import PageTitle from "../../components/PageTitle";
@@ -49,6 +50,8 @@ export default function ChangeUserPassword(props) {
     var [isSuccess, setIsSuccess] = useState(false);
     var [returnMessage, setReturnMessage] = useState("");
     const [title, setTitle] = useState('Change Password');
+    const [showPassword, setShowPassword] = useState({ oldPassword: false, newPassword: false, confirmPassword: false })
+
 
 
     // New -------------
@@ -64,7 +67,7 @@ export default function ChangeUserPassword(props) {
         // check numeric value also
         // if (newPasswordValue && !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i.test(newPasswordValue)) {
         // check without numeric number
-        if (newPasswordValue && !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.)(?=.*?[#?!@$%^&*-]).{8,}$/i.test(newPasswordValue)) {
+        if (newPasswordValue && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i.test(newPasswordValue)) {
             setIsPasswordPatternMatch(false);
             setPasswordPatternMessage("Password must contain at least 8 characters including upper/lower case and a special character.")
         }
@@ -108,7 +111,7 @@ export default function ChangeUserPassword(props) {
                     direction="row"
                     item xs={12} sm={12} md={12} lg={12}
                 >
-                    <Grid item xs={12} sm={6} md={6} lg={4} className={classes.formContainer}
+                    <Grid item xs={12} sm={6} md={6} lg={6} className={classes.formContainer}
                         container
                         direction="row"
                         justify="flex-start"
@@ -134,12 +137,26 @@ export default function ChangeUserPassword(props) {
                                                     <img src={PasswordIcon} alt="icon" className={classes.passwordIcon} />
                                                 </InputAdornment>
                                             }
+                                            endAdornment={
+                                                <InputAdornment position="end">
+
+                                                    <span style={{cursor:'pointer'}} onMouseDown={(event) => event.preventDefault()} onClick={() => {
+                                                        setShowPassword((prev) => ({
+                                                            ...prev,
+                                                            oldPassword: !showPassword.oldPassword
+                                                        }))
+                                                    }}>
+                                                        {showPassword.oldPassword ? <img style={{width:25}} src={VisibilityOffIcon} alt='vis' /> : <img style={{width:25}} src={VisibilityIcon} alt='vis' />}
+                                                    </span>
+
+                                                </InputAdornment>
+                                            }
                                             value={oldPasswordValue}
                                             className={classes.textField}
                                             onChange={e => setOldPasswordValue(e.target.value)}
                                             margin="none"
                                             placeholder="Old Password"
-                                            type="password"
+                                            type={!showPassword.oldPassword ? 'password' : 'text'}
                                             fullWidth
                                             required
                                         />
@@ -151,12 +168,26 @@ export default function ChangeUserPassword(props) {
                                                 <img src={PasswordIcon} alt="icon" className={classes.passwordIcon} />
                                             </InputAdornment>
                                         }
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <span style={{cursor:'pointer'}} onMouseDown={(event) => event.preventDefault()} onClick={() => {
+                                                    setShowPassword((prev) => ({
+                                                        ...prev,
+                                                        newPasword: !showPassword.newPassword
+                                                    }))
+                                                }}>
+                                                    {showPassword.newPassword ?<img style={{width:25}} src={VisibilityOffIcon} alt='vis' /> : <img style={{width:25}} src={VisibilityIcon} alt='vis' />}
+                                                </span>
+
+
+                                            </InputAdornment>
+                                        }
                                         value={newPasswordValue}
                                         className={classes.textField}
                                         onChange={e => setNewPasswordValue(e.target.value)}
                                         margin="none"
                                         placeholder="New Password"
-                                        type="password"
+                                        type={!showPassword.newPassword ? 'password' : 'text'}
                                         onFocus={() => setIsPasswordPatternMatch(false)}
                                         onBlur={onBlurNewPassword}
                                         fullWidth
@@ -206,12 +237,26 @@ export default function ChangeUserPassword(props) {
                                                 <img src={PasswordIcon} alt="icon" className={classes.passwordIcon} />
                                             </InputAdornment>
                                         }
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <span style={{cursor:'pointer'}} onClick={() => {
+                                                    setShowPassword((prev) => ({
+                                                        ...prev,
+                                                        confirmPassword: !showPassword.confirmPassword
+                                                    }))
+                                                }}
+                                                    onMouseDown={(event) => event.preventDefault()}
+                                                >
+                                                    {showPassword.confirmPassword ?<img style={{width:25}} src={VisibilityOffIcon} alt='vis' /> : <img style={{width:25}} src={VisibilityIcon} alt='vis' />}
+                                                </span>
+                                            </InputAdornment>
+                                        }
                                         value={confirmPasswordValue}
                                         className={classes.textField}
                                         onChange={e => setConfirmPasswordValue(e.target.value)}
 
                                         placeholder="Confirm Password"
-                                        type="password"
+                                        type={!showPassword.confirmPassword ? 'password' : 'text'}
                                         onBlur={onBlurConfPassword}
                                         onFocus={onFocusConfPassword}
                                         fullWidth
@@ -248,12 +293,12 @@ export default function ChangeUserPassword(props) {
                                         ) : (
                                             <Button
                                                 disabled={
-                                                   !props.isForgot ? oldPasswordValue.length === 0 || newPasswordValue.length === 0 || confirmPasswordValue.length === 0
-                                                   : newPasswordValue.length === 0 || confirmPasswordValue.length === 0
+                                                    !props.isForgot ? oldPasswordValue.length === 0 || newPasswordValue.length === 0 || confirmPasswordValue.length === 0
+                                                        : newPasswordValue.length === 0 || confirmPasswordValue.length === 0
                                                 }
                                                 onClick={(e) => {
                                                     e.preventDefault()
-                                                    console.log(props.isForgot , "________" , props.phoneNumber)
+                                                    console.log(props.isForgot, "________", props.phoneNumber)
                                                     changePassword(
                                                         userDispatch,
                                                         oldPasswordValue,
@@ -284,7 +329,7 @@ export default function ChangeUserPassword(props) {
                         </div>
                     </Grid>
 
-                    <Grid item xs={12} sm={6} md={6} lg={5} className={classes.formContainer}
+                    <Grid style={{ alignItems: 'center' }} item xs={12} sm={6} md={6} lg={6} className={classes.formContainer}
                         container
                         direction="row"
                         justify="flex-start"
@@ -303,7 +348,7 @@ export default function ChangeUserPassword(props) {
                                     }
                                 </div>
                                 <Grid xs={9} sm={10} md={10} lg={11} xl={11}>
-                                    <p> Password must have 8 characters </p>
+                                    <p> Min 8 characters </p>
                                 </Grid>
                             </Grid>
                             <Grid container xs={12} sm={12} lg={12} xl={12} className={classes.pRelative}>
@@ -317,7 +362,7 @@ export default function ChangeUserPassword(props) {
                                     }
                                 </div>
                                 <Grid xs={9} sm={10} md={10} lg={11} xl={11}>
-                                    <p> Password contain alfa numeric character </p>
+                                    <p> Atleast one number & Uppercase letter </p>
                                 </Grid>
                             </Grid>
                             <Grid container xs={12} sm={12} lg={12} xl={12} className={classes.pRelative}>
@@ -331,7 +376,7 @@ export default function ChangeUserPassword(props) {
                                     }
                                 </div>
                                 <Grid xs={9} sm={10} md={10} lg={11} xl={11}>
-                                    <p> Password have one or more special characters i.e @ # $ % etc </p>
+                                    <p> Atleast one special character ?,@,$ etc </p>
                                 </Grid>
                             </Grid>
                             {/* <p> Must not contain combination or name and places </p> */}
