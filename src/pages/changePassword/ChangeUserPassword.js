@@ -173,7 +173,7 @@ export default function ChangeUserPassword(props) {
                                                 <span style={{cursor:'pointer'}} onMouseDown={(event) => event.preventDefault()} onClick={() => {
                                                     setShowPassword((prev) => ({
                                                         ...prev,
-                                                        newPasword: !showPassword.newPassword
+                                                        newPassword: !showPassword.newPassword
                                                     }))
                                                 }}>
                                                     {showPassword.newPassword ?<img style={{width:25}} src={VisibilityOffIcon} alt='vis' /> : <img style={{width:25}} src={VisibilityIcon} alt='vis' />}

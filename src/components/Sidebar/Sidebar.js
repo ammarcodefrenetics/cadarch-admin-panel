@@ -30,6 +30,8 @@ import News from "../../images/icons/news.png";
 import Questions from "../../images/icons/questions.png";
 import Plots from "../../images/icons/plots.png";
 import Profile from "../../images/icons/profile.png";
+import BasePrice from '../../images/icons/baseprice.png'
+import Support from '../../images/icons/support.png'
 
 function Sidebar({ location }) {
     var classes = useStyles();
@@ -94,13 +96,13 @@ function Sidebar({ location }) {
             id: parseInt(10),
             label: 'Base Price',
             link: "/app/" + 'Baseprice'.toLowerCase(),
-            icon: <img src={Profile} alt='icon' />
+            icon: <img src={BasePrice} alt='icon' />
         },
         {
             id: parseInt(11),
             label: 'Support',
             link: "/app/" + 'Support'.toLowerCase(),
-            icon: <img src={CostEstimator} alt='icon' />
+            icon: <img src={Support} alt='icon' />
         }
 
     ];

@@ -456,7 +456,7 @@ function Login(props) {
                         }
 
                         {activeTabId === 3 && (
-                            <ChangeUserPassword isForgot={true} phoneNumber={phoneNumber} />
+                            <ChangeUserPassword isForgot={true} phoneNumber={"+92"+phoneNumber} />
                         )}
                         <>
                         </>
