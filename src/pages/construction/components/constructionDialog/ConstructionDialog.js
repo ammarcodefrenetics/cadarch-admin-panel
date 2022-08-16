@@ -73,7 +73,7 @@ function ConstructionDialog({ data, dialogOpenClose, handleClose, ...props }) {
             console.log(data , "construction data")
         setState({
             id: data?._id,
-            constructionType: data?.renovationType,
+            constructionType: data?.constructionType,
             constructionTypeOption: data?.constructionTypeOption,
             area: data?.area,
             location: data?.location,
@@ -189,14 +189,14 @@ function ConstructionDialog({ data, dialogOpenClose, handleClose, ...props }) {
 
                                         <Grid container direction="row">
 
-                                            <Label title="Renovation Type" xs={12} sm={2} md={2} lg={2} />
+                                            <Label title="Construction Type" xs={12} sm={2} md={2} lg={2} />
 
                                             <Grid item xs={12} sm={4} md={4} lg={4} >
                                                 <InputBaseField
                                                     disabled={true}
                                                     id="renovationType"
                                                     name="renovationType"
-                                                    value={state.renovationType}
+                                                    value={state.constructionType}
                                                     onChange={handleChange}
                                                 />
                                             </Grid>
@@ -287,7 +287,7 @@ function ConstructionDialog({ data, dialogOpenClose, handleClose, ...props }) {
 
                                             <Label title="Audio File" xs={12} sm={2} md={2} lg={2} />
 
-                                            <Grid item xs={12} sm={8} md={8} lg={8}  >
+                                            <Grid item xs={12} sm={8} md={8} lg={8}  style={{marginTop:10 , marginBottom:10}}>
 
                                                 <audio controls className={classes.audioFile}>
                                                     <source src={`http://localhost:5000/${state.audioFile}`} type="audio/mpeg" />

@@ -282,7 +282,7 @@ function ArchitectureDialog({ data, dialogOpenClose, handleClose, ...props }) {
 
                                             <Label title="Audio File" xs={12} sm={2} md={2} lg={2} />
 
-                                            <Grid item xs={12} sm={8} md={8} lg={8}  >
+                                            <Grid item xs={12} sm={8} md={8} lg={8} style={{marginTop:10 , marginBottom:10}}  >
 
                                                 <audio controls className={classes.audioFile}>
                                                     <source src={`http://localhost:5000/${data.audioFile}`} type="audio/mpeg" />

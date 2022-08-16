@@ -65,26 +65,28 @@ function Construction(props) {
                 {/* <Button
                     size="small"
                     className={classes.newAddBtn2}
-                    onClick={addNew}
+                    
                 >+ Add New </Button> */}
+                <Grid item lg={12} xl={12}>
+                    <SearchGrid
+                        dp={true}
+                        isView={false}
+                        isEditAble={true}
+                        isDelete={false}
+                        isUpdate={isUpdate}
+                        isSearchAble={true}
+                        isCustomSearch={false}
+                        columnCode="ConstructionColumns"
+                        searchPanelParams="ConstructionColumns"
+                        // isRowClickAble={true}
+                        // rowClick={getId}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                        apiUrl="construction/loadallconstruction"
+                        filter={filterValues}
+                    />
+                </Grid>
 
-                <SearchGrid
-                    dp={true}
-                    isView={false}
-                    isEditAble={true}
-                    isDelete={false}
-                    isUpdate={isUpdate}
-                    isSearchAble={true}
-                    isCustomSearch={false}
-                    columnCode="ConstructionColumns"
-                    searchPanelParams="ConstructionColumns"
-                    // isRowClickAble={true}
-                    // rowClick={getId}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    apiUrl="construction/loadallconstruction"
-                    filter={filterValues}
-                />
             </Container>
             {
                 <ConstructionDialog

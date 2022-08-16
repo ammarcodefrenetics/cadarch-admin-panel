@@ -473,6 +473,7 @@ export const data = {
 
             }
         },
+        
         {
             title: 'Action',
             dataIndex: 'action',
@@ -485,11 +486,11 @@ export const data = {
             title: '',
             dataIndex: '_id',
             className: "custom-grid-hide-col"
+            
         },
         {
             title: 'Construction Type',
             dataIndex: 'constructionType',
-            className: "width65",
             sorter: (a, b) => {
                 a = a.constructionType != null ? a.constructionType : "";
                 b = b.constructionType != null ? b.constructionType : "";
@@ -505,7 +506,6 @@ export const data = {
         {
             title: 'Address',
             dataIndex: 'address',
-            className: "width150",
             sorter: (a, b) => {
                 a = a.location != null ? a.location : "";
                 b = b.location != null ? b.location : "";
@@ -520,7 +520,6 @@ export const data = {
         {
             title: 'Area',
             dataIndex: 'area',
-            className: "width100",
             sorter: (a, b) => {
                 a = a.area != null ? a.area : "";
                 b = b.area != null ? b.area : "";
@@ -536,8 +535,8 @@ export const data = {
         {
             title: 'Details',
             dataIndex: 'details',
-            className: "width220",
             ellipsis:true,
+            className:'width220',
             sorter: (a, b) => {
                 a = a.details != null ? a.details + '' : "";
                 b = b.details != null ? b.details + '' : "";
@@ -554,8 +553,9 @@ export const data = {
             title: 'Action',
             dataIndex: 'action',
             align: "right",
-            className: "width100"
-        }
+            className:"width150"
+        },
+        
     ],
     PlotColumns: [
         {
@@ -566,7 +566,6 @@ export const data = {
         {
             title: 'Title',
             dataIndex: 'title',
-            className: "width65",
             sorter: (a, b) => {
                 a = a.title != null ? a.title : "";
                 b = b.title != null ? b.title : "";
@@ -576,7 +575,6 @@ export const data = {
         {
             title: 'Label',
             dataIndex: 'size',
-            className: "width150",
             sorter: (a, b) => {
                 a = a.label != null ? a.label : "";
                 b = b.label != null ? b.label : "";
@@ -586,7 +584,6 @@ export const data = {
         {
             title: 'Covered Area',
             dataIndex: 'coveredArea',
-            className: "width220",
             sorter: (a, b) => {
                 a = a.coveredArea != null ? a.coveredArea + '' : "";
                 b = b.coveredArea != null ? b.coveredArea + '' : "";
@@ -596,7 +593,6 @@ export const data = {
         {
             title: 'Area With Basement',
             dataIndex: 'coveredAreaWithBasement',
-            className: "coveredAreaWithBasement",
             sorter: (a, b) => {
                 a = a.coveredAreaWithBasement != null ? a.coveredAreaWithBasement + '' : "";
                 b = b.coveredAreaWithBasement != null ? b.coveredAreaWithBasement + '' : "";
@@ -607,7 +603,6 @@ export const data = {
             title: 'Action',
             dataIndex: 'action',
             align: "right",
-            className: "width100"
         }
     ],
     NewsColumns: [

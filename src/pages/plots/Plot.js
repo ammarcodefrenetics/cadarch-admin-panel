@@ -95,7 +95,7 @@ function Plot(props) {
                     >+ Add New
                     </Button>
                 </Grid>
-                <Grid item lg={12}>
+                <Grid style={{width:'100%'}} item lg={12}>
 
                     <SearchGrid
                         dp={true}

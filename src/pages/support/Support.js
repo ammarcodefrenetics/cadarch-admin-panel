@@ -82,7 +82,7 @@ function Support(props) {
                     onClick={addNew}
                 >+ Add New
                 </Button> */}
-
+                <Grid>
                 <SearchGrid
                     dp={true}
                     isUpdate={isUpdate}
@@ -101,6 +101,8 @@ function Support(props) {
                     apiUrl="support/loadallsupport"
                     filter={filterValues}
                 />
+                </Grid>
+                
             </Container>
             {/* {
                 <RenovationDialog

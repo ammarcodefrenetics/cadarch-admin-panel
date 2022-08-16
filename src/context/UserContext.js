@@ -100,6 +100,7 @@ async function loginUser(dispatch, emailaddress, password, history, setIsLoading
             sessionStorage.clear();
             sessionStorage.setItem('server_api_url', baseUrl);
             sessionStorage.setItem('auth_token', response.data.token);
+            response.data.user.cellPhone = response.data.user.cellPhone.slice(3)
             sessionStorage.setItem('user_info', JSON.stringify(response.data.user));
             // sessionStorage.removeItem("login_attempts");
 

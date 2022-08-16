@@ -7,7 +7,7 @@ export default makeStyles(theme => ({
     textDecoration: "none",
     paddingLeft: 0,
     paddingRight: 0,
-    borderBottom: "1px solid white",
+    borderBottom: "1px solid 	#404040",
     color: "white",
     "&:hover, &:focus": {
       backgroundColor: "#596270",
@@ -78,7 +78,7 @@ export default makeStyles(theme => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(4),
     height: 1,
-    backgroundColor: "#D8D8D880",
+    color: "red",
   },
   eIcon: {
     color: "#fff",
