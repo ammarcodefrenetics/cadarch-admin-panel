@@ -20,7 +20,6 @@ import { GetDataAPI } from "../../Services/GetDataAPI";
 export default function SearchList({ code, apiUrl, isDisabled, popperWidth, mandatory, searchId, ...props }) {
     const { value,displayOrder,isEdit, existingDependencies ,id} = props;
     const [dependencies ] = useState(existingDependencies)
-    console.log(existingDependencies,"from props")
     var classes = useStyles();
     const [searchTerm, setSearchTerm] = useState(props.searchTerm);
     const [searchResults, setSearchResults] = useState([]);

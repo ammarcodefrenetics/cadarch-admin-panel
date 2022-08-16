@@ -268,11 +268,11 @@ export const data = {
         }
     ],
     RenovationColumns: [
-        {
-            title: '',
-            dataIndex: '_id',
-            className: "custom-grid-hide-col"
-        },
+        // {
+        //     title: '',
+        //     dataIndex: '_id',
+        //     className: "custom-grid-hide-col"
+        // },
         {
             title: 'Renovation Type',
             dataIndex: 'renovationType',
@@ -419,11 +419,11 @@ export const data = {
         }
     ],
     AchitectureColumns: [
-        {
-            title: '',
-            dataIndex: '_id',
-            className: "custom-grid-hide-col"
-        },
+        // {
+        //     title: '',
+        //     dataIndex: '_id',
+        //     className: "custom-grid-hide-col"
+        // },
         {
             title: 'Architecture Type',
             dataIndex: 'architectureType',
@@ -482,12 +482,12 @@ export const data = {
         }
     ],
     ConstructionColumns: [
-        {
-            title: '',
-            dataIndex: '_id',
-            className: "custom-grid-hide-col"
+        // {
+        //     title: '',
+        //     dataIndex: '_id',
+        //     className: "custom-grid-hide-col"
             
-        },
+        // },
         {
             title: 'Construction Type',
             dataIndex: 'constructionType',
@@ -606,15 +606,16 @@ export const data = {
         }
     ],
     NewsColumns: [
-        {
-            title: '',
-            dataIndex: '_id',
-            className: "custom-grid-hide-col"
-        },
+        // {
+        //     title: '',
+        //     dataIndex: '_id',
+        //     className: "custom-grid-hide-col",
+     
+        // },
         {
             title: 'Title',
             dataIndex: 'title',
-            className: "width150",
+            className: "width300",
             sorter: (a, b) => {
                 a = a.title != null ? a.title : "";
                 b = b.title != null ? b.title : "";
@@ -624,7 +625,7 @@ export const data = {
         {
             title: 'Details',
             dataIndex: 'details',
-            className: "width220",
+            className: "width300",
             ellipsis:true,
             sorter: (a, b) => {
                 a = a.details != null ? a.details + '' : "";
@@ -635,8 +636,8 @@ export const data = {
         {
             title: 'Action',
             dataIndex: 'action',
+            className: "width300",
             align: "right",
-            className: "width100"
         }
     ],
     UsersColumns: [
@@ -667,11 +668,11 @@ export const data = {
         },
     ],
     SupportColumns: [
-        {
-            title: '',
-            dataIndex: '_id',
-            className: "custom-grid-hide-col"
-        },
+        // {
+        //     title: '',
+        //     dataIndex: '_id',
+        //     className: "custom-grid-hide-col"
+        // },
         {
             title: 'Support Type',
             dataIndex: 'type',

@@ -253,6 +253,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
 
     //select options
     const handleMultiSelectChange = (name, selected) => {
+        console.log(name , " ----------- ",selected)
         setState(prevState => ({
             ...prevState,
             [name]: selected
@@ -445,6 +446,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                     questionName: "",
                     questionOption: []
                 }));
+                setOptionsList([])
             } else {
                 _selectedDependencies.push(dependency);
                 setSelectedDependencies(_selectedDependencies)
@@ -454,6 +456,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                     questionName: "",
                     questionOption: []
                 }));
+                setOptionsList([])
             }
         }
     }
@@ -1139,13 +1142,13 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             <MultiSelectField
                                                                 id="questionOption"
                                                                 name="questionOption"
-
-
                                                                 options={optionsList}
-                                                                isDisabled={!state.questionId}
+                                                                isDisabled={!state.questionId ? true :false}
+                                                                // isDisabled={optionsList.length <= 0 ? true :false}
                                                                 onChange={handleMultiSelectChange}
                                                                 placeholder='Select Question Option'
                                                                 Value={state.questionOption}
+                                                                setOptionsList={setOptionsList}
                                                             />
                                                             {
                                                                 errorMessages.dependencyOptionError &&
@@ -1153,7 +1156,10 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             }
                                                         </Grid>
                                                         <Grid item xs={2} sm={1} md={1} lg={1} >
+                                                           {!optionsList.length > 0 ? (
                                                             <AddIcon onClick={handleAddDependency} className={classes.addIcon} />
+                                                           ):null
+                                                            }
                                                         </Grid>
 
                                                     </Grid>
@@ -1191,13 +1197,14 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             <MultiSelectField
                                                                 id="questionOption"
                                                                 name="questionOption"
-
-
                                                                 options={optionsList}
-                                                                isDisabled={!state.questionId}
+                                                                isDisabled={!state.questionId ? true :false}
+                                                                // isDisabled={optionsList.length <= 0 ? true :false}
                                                                 onChange={handleMultiSelectChange}
                                                                 placeholder='Select Question Option'
                                                                 Value={state.questionOption}
+                                                                setOptionsList={setOptionsList}
+                                                                setState={setState}
                                                             />
                                                             {
                                                                 errorMessages.dependencyOptionError &&
@@ -1205,7 +1212,9 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             }
                                                         </Grid>
                                                         <Grid item xs={2} sm={1} md={1} lg={1} >
+                                                       
                                                             <AddIcon onClick={handleAddDependency} className={classes.addIcon} />
+                                                          
                                                         </Grid>
 
                                                     </Grid>

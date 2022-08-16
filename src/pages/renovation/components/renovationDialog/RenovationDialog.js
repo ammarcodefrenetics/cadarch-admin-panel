@@ -78,7 +78,7 @@ function RenovationDialog({ data, dialogOpenClose, handleClose, ...props }) {
             location: data?.location,
             isFollowUp: data?.isFollowUp,
             details: data?.details,
-            comments: data?.comments,
+            comments: data?.comments ?? '',
             audioFile: data?.audioFile,
             address: data?.address,
             attachmentsPath: data?.attachmentsPath,
@@ -109,7 +109,7 @@ function RenovationDialog({ data, dialogOpenClose, handleClose, ...props }) {
                 isFollowUpError: false
             }));
         }
-        if (!state.comments || state.comments.trim() == "") {
+        if (!state.comments || state.comments.trim() === "") {
             setErrorMessages(prevState => ({
                 ...prevState,
                 commentsError: true

@@ -336,7 +336,7 @@ table.dataTable thead .sorting_desc_disabled:empty {
 
 .width150 {
   min-width: 150px;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
 }
 
 .width165 {

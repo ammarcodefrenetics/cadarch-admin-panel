@@ -13,7 +13,7 @@ import {
 import { AttachFile, Close as CloseIcon }
     from '@material-ui/icons';
 // import CloseIcon from "../../../../images/icons/math-plus.png"
-import { DraggableComponent, FormBtn, FormGroupTitle, Label } from "../../../../components/UiElements/UiElements";
+import { DraggableComponent, ErrorMessage, FormBtn, FormGroupTitle, Label } from "../../../../components/UiElements/UiElements";
 import { InputBaseField, TextareaField, CheckboxField, SelectField } from "../../../../components/InputField/InputField";
 import { PostDataAPI } from '../../../../Services/PostDataAPI';
 import { withSnackbar } from '../../../../components/Message/Alert'
@@ -78,7 +78,7 @@ function ArchitectureDialog({ data, dialogOpenClose, handleClose, ...props }) {
             location: data?.location,
             isFollowUp: data?.isFollowUp,
             details: data?.details,
-            comments: data?.comments,
+            comments: data?.comments ?? '',
             audioFile: data?.audioFile,
             address: data?.address,
             attachmentsPath: data?.attachmentsPath,
@@ -109,7 +109,7 @@ function ArchitectureDialog({ data, dialogOpenClose, handleClose, ...props }) {
                 isFollowUpError: false
             }));
         }
-        if (!state.comments || state.comments.trim() == "") {
+        if (!state.comments || state.comments.trim() === "") {
             setErrorMessages(prevState => ({
                 ...prevState,
                 commentsError: true
@@ -273,7 +273,10 @@ function ArchitectureDialog({ data, dialogOpenClose, handleClose, ...props }) {
                                                     placeholder="Comments"
                                                     onChange={handleChange}
                                                 />
-
+                                                {
+                                                    errorMessages.commentsError &&
+                                                    <ErrorMessage> Please enter your comments </ErrorMessage>
+                                                }
                                             </Grid>
 
                                         </Grid>
@@ -282,7 +285,7 @@ function ArchitectureDialog({ data, dialogOpenClose, handleClose, ...props }) {
 
                                             <Label title="Audio File" xs={12} sm={2} md={2} lg={2} />
 
-                                            <Grid item xs={12} sm={8} md={8} lg={8} style={{marginTop:10 , marginBottom:10}}  >
+                                            <Grid item xs={12} sm={8} md={8} lg={8} style={{ marginTop: 10, marginBottom: 10 }}  >
 
                                                 <audio controls className={classes.audioFile}>
                                                     <source src={`http://localhost:5000/${data.audioFile}`} type="audio/mpeg" />

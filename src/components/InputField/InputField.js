@@ -16,9 +16,10 @@ import {
     Switch
 } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import clearIcon from '../../images/icons/math-plus.png'
 import { InputNumber } from 'antd';//, DatePicker
 import useStyles from "./styles";
-import { TramRounded } from "@material-ui/icons";
+import { TramRounded, TrendingUpRounded } from "@material-ui/icons";
 
 // import moment from 'moment';
 
@@ -312,11 +313,12 @@ function CustomSelectField({ id, name, value, options, onChange, placeholder, ..
 CustomSelectField.propTypes = {
     onChange: PropTypes.func.isRequired,
 };
-function MultiSelectField({ id, name, Value, options, onChange, placeholder, isDisabled, isDisableClearable, ...props }) {
+function MultiSelectField({ id, name, Value, options, onChange, placeholder, isDisabled, isDisableClearable, setOptionsList, setState, ...props }) {
     var classes = useStyles();
     const [defvalue, setDefaultValues] = useState('');
+
     const onChangeEvent = (selected) => {
-        console.log(selected , " selected multi select")
+        console.log(selected, " selected multi select")
         if (selected != null) {
             // let selectedvalues = selected.map((sel) => {
             //     return sel.value;
@@ -326,50 +328,58 @@ function MultiSelectField({ id, name, Value, options, onChange, placeholder, isD
     };
     //Get default set option
     const getSelectedItem = () => {
-        // let defaultvalues = [];
+        setDefaultValues('')
         const item = options.map((opt) => {
             if (Value != null || Value != undefined) {
-                // Value.map((selval) => {
-                    if (opt.value === Value) {
-                        setDefaultValues(opt);
-                    }
-                // })
-                // setDefaultValues(defaultvalues);
+                if (opt.value === Value) {
+                    setDefaultValues(opt);
+                }
             }
         });
-         setDefaultValues('');
+        setDefaultValues('');
         return item || {};
     }
     //Get default selected value when options or values provided are changed
     useEffect(() => {
         getSelectedItem();
+        const close = document.getElementsByClassName(
+            "MuiAutocomplete-clearIndicator"
+          )[0];
+            
+          // Add a Click Event Listener to the button
+         const eve=  close.addEventListener("click", () => {
+                  setState((prev)=>(
+                        {
+                            ...prev,
+                            questionOption:[]
+                        }
+                    ))
+          });
+          return eve
     }, [Value, options])
 
     return (
         <>
             <Autocomplete
-                // multiple
-                // limitTags={1}
                 size="small"
                 value={defvalue}
                 name={name}
                 options={options}
-                // defaultValue={defvalue}
-                filterSelectedOptions
-                disableClearable={isDisableClearable}
                 getOptionLabel={(option) => option.label}
-                disabled={defvalue.length>0 ? true : false}
+                clearOnBlur={false}
+                clearOnEscape={false}
+                filterSelectedOptions={true}
                 onChange={(event, values) => onChangeEvent(values)}
                 className={classes.baseInputAutocomplete}
-                // classes={{ inputRoot: classes.baseInputAutocomplete }}
+
                 renderInput={(params) => (
-                    <TextField
+        
+                      <TextField
                         {...params}
                         variant="outlined"
                         fullWidth
-                    // className={classes.baseTextarea}
-                    // label="Multiple values"
-                    />
+                    
+                    />  
                 )}
             />
         </>

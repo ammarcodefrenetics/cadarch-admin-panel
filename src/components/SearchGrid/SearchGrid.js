@@ -157,11 +157,11 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                                     <Icon> <Switch onChange={(e)=>{onToggle(e,item._id)}} disabled={item.isActive} checked={item.isActive} size="small" className={classes.Icon} /> </Icon>
                                 </Tooltip>}
                                     {isDelete && !isToggle && <Tooltip title="Delete">
-                                        <Icon> <img src={Delete} onClick={() => onDelete(item[gridCnfg[props.columnCode][0].dataIndex])} className={classes.Icon} /> </Icon>
+                                        <Icon> <img src={Delete} onClick={() => onDelete(item._id)} className={classes.Icon} /> </Icon>
                                     </Tooltip>
                                     }
                                     {isDelete && isToggle && !item.isActive && <Tooltip title="Delete">
-                                        <Icon> <img src={Delete} onClick={() => onDelete(item[gridCnfg[props.columnCode][0].dataIndex])} className={classes.Icon} /> </Icon>
+                                        <Icon> <img src={Delete} onClick={() => onDelete(item._id)} className={classes.Icon} /> </Icon>
                                     </Tooltip>
                                     }
                                    
@@ -220,11 +220,11 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                                 <Icon> <Switch onChange={(e)=>{onToggle(e,item._id)}} disabled={item.isActive} checked={item.isActive} size="small" className={classes.Icon} /> </Icon>
                             </Tooltip>}
                                 {isDelete && !isToggle && <Tooltip title="Delete">
-                                    <Icon> <img src={Delete} onClick={() => onDelete(item[gridCnfg[props.columnCode][0].dataIndex])} className={classes.Icon} /> </Icon>
+                                    <Icon> <img src={Delete} onClick={() => onDelete(item._id)} className={classes.Icon} /> </Icon>
                                 </Tooltip>
                                 }
                                 {isDelete && isToggle && !item.isActive && <Tooltip title="Delete">
-                                    <Icon> <img src={Delete} onClick={() => onDelete(item[gridCnfg[props.columnCode][0].dataIndex])} className={classes.Icon} /> </Icon>
+                                    <Icon> <img src={Delete} onClick={() => onDelete(item._id)} className={classes.Icon} /> </Icon>
                                 </Tooltip>
                                 }
                                
