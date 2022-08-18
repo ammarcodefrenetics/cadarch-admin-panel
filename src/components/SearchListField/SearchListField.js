@@ -19,7 +19,6 @@ import { GetDataAPI } from "../../Services/GetDataAPI";
 
 export default function SearchList({ code, apiUrl, isDisabled, popperWidth, mandatory, searchId, ...props }) {
     const { value,displayOrder,isEdit, existingDependencies ,id} = props;
-    const [dependencies ] = useState(existingDependencies)
     var classes = useStyles();
     const [searchTerm, setSearchTerm] = useState(props.searchTerm);
     const [searchResults, setSearchResults] = useState([]);
@@ -30,21 +29,29 @@ export default function SearchList({ code, apiUrl, isDisabled, popperWidth, mand
         GetDataAPI(apiUrl).then((result) => {
            
             if (result.responseCode == 1 && result.responseStatus == "success" && result.data.data != null) {
-                const myArrayFiltered = result.data.data.filter((question) => {
-                    return existingDependencies.every((dependency) => {
-                      return question._id !== dependency.dependsOnQuestion.id
-                    });
-                  });
+                console.log(existingDependencies , " existing dep" , result.data.data , " all dependencies ")
+                let myArrayFiltered =[]
+                let myArrayFilteredEdit =[]
+                
                 if(isEdit){
-                    
+                    myArrayFilteredEdit = result.data.data.filter((question) => {
+                        return existingDependencies.every((dependency) => {
+                          return question._id !== dependency.dependsOnQuestion.id
+                        });
+                      });
                     setSearchResults(
-                        myArrayFiltered.filter(item => item._id !== value && item.displayOrder < displayOrder).map((item, i) => {
+                        myArrayFilteredEdit.filter(item => item._id !== value && item.displayOrder < displayOrder).map((item, i) => {
                             return { id: item._id, value: item.title, diplayOrder: item.diplayOrder };
                         }));
                 }
                 else{
+                    myArrayFiltered =  result.data.data.filter((question) => {
+                        return existingDependencies.every((dependency) => {
+                          return question._id !== dependency.dependsOnQuestion.id
+                        });
+                      });
                     setSearchResults(
-                        myArrayFiltered.filter(item => item._id !== value).map((item, i) => {
+                      myArrayFiltered.filter(item => item._id !== value).map((item, i) => {
                             return { id: item._id, value: item.title, diplayOrder: item.diplayOrder };
                         }));
                 }       
@@ -53,7 +60,7 @@ export default function SearchList({ code, apiUrl, isDisabled, popperWidth, mand
         });
     }
     useEffect(() => {
-          
+
                 loadQuestions()
            
     }, [searchTerm, value, props.searchTerm, code, searchId]);

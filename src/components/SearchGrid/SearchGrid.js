@@ -93,16 +93,17 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
     
 
         GetDataAPI(props.apiUrl).then((result) => {
-
+            console.log(result.data.data , "questions")
             setIsLoading(false);
             if (result.responseCode == 1 && result.responseStatus == "success") {
                 let allQuestions = []
                 if (isQuestions) {
-                  allQuestions = sortByQuestionType(result.data.data)
+                //   allQuestions = sortByQuestionType(result.data.data)
+                allQuestions=result.data.data
                 }
                 setRowsData(
                     isQuestions ? allQuestions.map((item, i ,array) => { 
-                        item.key = item[gridCnfg[props.columnCode][0].dataIndex];
+                        item.key = item._id;
                       
                         // item.isBasic = item.isBasic ? 'yes' : 'no'
                      
@@ -131,7 +132,7 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                                 </Tooltip>
                                 }
                                 {isDelete && <Tooltip title="Delete">
-                                    <Icon> <img src={Delete} onClick={() => onDelete(item[gridCnfg[props.columnCode][0].dataIndex])} className={classes.Icon} /> </Icon>
+                                    <Icon> <img src={Delete} onClick={() => onDelete(item._id)} className={classes.Icon} /> </Icon>
                                 </Tooltip>
                                 }
                                 
@@ -140,8 +141,8 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                         return { ...item }
                     }) :
                         result.data.data.map((item, i) => {
-                            item.key = item[gridCnfg[props.columnCode][0].dataIndex];
-                            item.isBasic = item.isBasic ? 'yes' : 'no'
+                            item.key = item._id;
+                            // item.isBasic = item.isBasic ? 'yes' : 'no'
                             item.size = item.size ? item.size + " " + item.unit : ""
                             item.action =
                                 <div style={{ width: "100%", textAlign: "right" }}>
@@ -172,8 +173,8 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                         }));
 
                 setGridData( isQuestions ? allQuestions.map((item, i) => {
-                    item.key = item[gridCnfg[props.columnCode][0].dataIndex];
-                    item.isBasic = item.isBasic ? 'yes' : 'no'
+                    item.key = item._id;
+                    // item.isBasic = item.isBasic ? 'yes' : 'no'
                     item.size = item.size ? item.size + " " + item.unit : ""
                     item.action =
                         <div style={{ width: "100%", textAlign: "right"  }}>
@@ -194,7 +195,7 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                             </Tooltip>
                             }
                             {isDelete && <Tooltip title="Delete">
-                                <Icon> <img src={Delete} onClick={() => onDelete(item[gridCnfg[props.columnCode][0].dataIndex])} className={classes.Icon} /> </Icon>
+                                <Icon> <img src={Delete} onClick={() => onDelete(item._id)} className={classes.Icon} /> </Icon>
                             </Tooltip>
                             }
                             
@@ -203,8 +204,8 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                     return { ...item }
                 }) :
                     result.data.data.map((item, i) => {
-                        item.key = item[gridCnfg[props.columnCode][0].dataIndex];
-                        item.isBasic = item.isBasic ? 'yes' : 'no'
+                        item.key = item._id;
+                        // item.isBasic = item.isBasic ? 'yes' : 'no'
                         item.size = item.size ? item.size + " " + item.unit : ""
                         item.action =
                             <div style={{ width: "100%", textAlign: "right" }}>

@@ -321,7 +321,7 @@ function ConstructionDialog({ data, dialogOpenClose, handleClose, ...props }) {
                                                             // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25].map((item, i) => {
                                                             (state?.attachmentsPath?.length > 0) && state.attachmentsPath.map((item, i) => {
                                                                 let extArray = item?.path?.split(".")[1];
-                                                                if (extArray != "mp3" || extArray != "m4a") {
+                                                                if (extArray !== "mp3" && extArray !== "m4a") {
                                                                     var path = "http://localhost:5000/" + item?.path?.replace(/\\/g, "/");
                                                                     return (
                                                                         <li key={item._id} className={classes.root}>

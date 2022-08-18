@@ -114,6 +114,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         setAttachment({ file: null, fileToSend: null, fileName: null });
         loadQuestionData();
         setQuestionOptions([]);
+        console.log(isEdit , " edit vlaue prior to setting dependencies")
         setSelectedDependencies(isEdit?null:[]);
         setErrorMessages({
             questionTitleError: false,
@@ -129,13 +130,12 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         })
     }
     const ResetForm = () => {
-
         if (isEdit && data && data != null) {
             setState({
                 id: data._id,
                 title: data.title,
                 displayOrder: data.displayOrder,
-                isBasic: data.isBasic === "yes" ? true : data.isBasic === "no" ? false : false,
+                isBasic: data.isBasic ,
                 isDependent: data.isDependent,
                 details: data.details,
             });
@@ -282,6 +282,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
             }
         })
     }
+
     //add options to list
     const addOptionToList = () => {
         let isValidated = validateOption(true);
@@ -719,6 +720,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
     }
     //update questionData
     const updateQuestion = async () => {
+        console.log(state)
         let isValidated = validateQuestion(true);
         if (isValidated) {
             if (questionOptions?.length !== 0 && questionOptions?.length >= 2) {
@@ -728,7 +730,6 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                     return;
                 }
                 let postData = {
-                    userId: user_info._id,
                     title: state.title,
                     details: state.details,
                     isBasic: state.isBasic,
@@ -796,8 +797,11 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
 
     //useEffect
     useEffect(() => {
+        // if(isEdit){
+        //     loadDependencies()
+        // }
         ResetForm();
-    }, [dialogOpenClose]);
+    }, [dialogOpenClose,isEdit]);
     const ShowActionDialog = (actiontype, title, message, type, OnOkCallback, OnCancellCallback) => {
         setActionDialogProps(prevState => ({
             ...prevState,
@@ -827,7 +831,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                 <div className={classes.dialogContent}>
                     <div className={classes.box}>
                         <div className={classes.header} id="draggable-dialog-title">
-                            <FormGroupTitle>Add New Question</FormGroupTitle>
+                            <FormGroupTitle>{isEdit ? 'Edit Question' : 'Add New Question'}</FormGroupTitle>
                             <CloseIcon className={classes.crossButton} onClick={closeDialog} />
                         </div>
                         <div className={classes.content}>
@@ -1112,9 +1116,9 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                 <FormGroupTitle>Dependencies</FormGroupTitle>
                                                 {showDependenciesForm && state.isBasic && selectedDependencies !== null &&
                                                     <Grid container direction="row">
-
                                                         <Label title="Title" sm={2} md={2} lg={2} />
                                                         <Grid item xs={12} sm={4} md={4} lg={4} >
+                                                        {console.log(selectedDependencies , "selected dependencies in parent" , "is edit" ,isEdit)}
                                                             <SearchList
                                                                 id={state.id}
                                                                 name="questionName"
@@ -1140,6 +1144,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
 
                                                         <Grid item xs={10} sm={3} md={3} lg={3} >
                                                             <MultiSelectField
+                                                            key={state.questionId}
                                                                 id="questionOption"
                                                                 name="questionOption"
                                                                 options={optionsList}
@@ -1149,6 +1154,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                                 placeholder='Select Question Option'
                                                                 Value={state.questionOption}
                                                                 setOptionsList={setOptionsList}
+                                                                setState={setState}
                                                             />
                                                             {
                                                                 errorMessages.dependencyOptionError &&
@@ -1156,10 +1162,9 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             }
                                                         </Grid>
                                                         <Grid item xs={2} sm={1} md={1} lg={1} >
-                                                           {!optionsList.length > 0 ? (
+                                                        
                                                             <AddIcon onClick={handleAddDependency} className={classes.addIcon} />
-                                                           ):null
-                                                            }
+                                                        
                                                         </Grid>
 
                                                     </Grid>
@@ -1196,6 +1201,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
 
                                                             <MultiSelectField
                                                                 id="questionOption"
+                                                                key={state.questionId}
                                                                 name="questionOption"
                                                                 options={optionsList}
                                                                 isDisabled={!state.questionId ? true :false}

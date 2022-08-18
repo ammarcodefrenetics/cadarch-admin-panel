@@ -29,6 +29,8 @@ import Avatar from "@material-ui/core/Avatar";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import OtpInput from "react-otp-input";
 import ChangeUserPassword from "../changePassword/ChangeUserPassword";
+import VisibilityIcon from '../../images/icons/visibility.png';
+import VisibilityOffIcon from '../../images/icons/visibility-off.png';
 
 
 
@@ -50,6 +52,7 @@ function Login(props) {
     let [validatePhoneNumber, setValidatePhoneNumber] = useState(false);
     let [phoneNumber, setPhoneNumber] = useState('');
     let [resetButtonDisalbed, setResetButtonDisalbed] = useState(false);
+    const [showPassword , setShowPassword] = useState(false)
     const [pass, setPass] = useState('')
     const [confPass, setConfPass] = useState('')
     const [otp, setOtp] = useState('')
@@ -155,7 +158,7 @@ function Login(props) {
                                         id="EmailAddress"
                                         startAdornment={
                                             <InputAdornment position="start">
-                                                <img src={EmailIcon} alt="icon" className={classes.emailIcon} />
+                                                <img style={{width:15}} src={EmailIcon} alt="icon" className={classes.emailIcon} />
                                             </InputAdornment>
                                         }
                                         value={loginValue}
@@ -179,15 +182,26 @@ function Login(props) {
                                         id="Password"
                                         startAdornment={
                                             <InputAdornment position="start">
-                                                <img src={PasswordIcon} alt="icon" className={classes.passwordIcon} />
+                                                <img style={{width:15}} src={PasswordIcon} alt="icon" className={classes.passwordIcon} />
                                             </InputAdornment>
                                         }
+                                        endAdornment={
+                                                <InputAdornment position="end">
+
+                                                    <span style={{cursor:'pointer'}} onMouseDown={(event) => event.preventDefault()} onClick={() => {
+                                                        setShowPassword(!showPassword)
+                                                    }}>
+                                                        {showPassword ? <img style={{width:25}} className={classes.passwordIcon} src={VisibilityOffIcon} alt='vis' /> : <img style={{width:25}} src={VisibilityIcon} alt='vis' />}
+                                                    </span>
+
+                                                </InputAdornment>
+                                            }
                                         value={passwordValue}
                                         className={classes.textPassword}
                                         onChange={e => setPasswordValue(e.target.value)}
                                         margin="none"
                                         placeholder="Password"
-                                        type="password"
+                                        type={showPassword ? "text" : "password"}
                                         fullWidth
                                         required
                                         autoComplete={"off"}
@@ -260,7 +274,7 @@ function Login(props) {
                                     <InputBaseField
                                         id="resetEmail"
                                         startAdornment={
-                                            <InputAdornment style={{ cursor: 'not-allowed' }} position="start">
+                                            <InputAdornment style={{ cursor: 'not-allowed' , padding:5 }} position="start">
                                                 <p>+92</p>
                                             </InputAdornment>
                                         }
@@ -290,7 +304,7 @@ function Login(props) {
                                     {error ? (
                                         <Fade in={error}>
                                             <Typography color="secondary" className={classes.errorMessage}>
-                                                Phone number not found
+                                                {returnMessage}
                                             </Typography>
                                         </Fade>) : ("")
                                     }

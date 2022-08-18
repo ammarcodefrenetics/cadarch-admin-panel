@@ -325,6 +325,7 @@ function MultiSelectField({ id, name, Value, options, onChange, placeholder, isD
             // })
             onChange(name, selected.value);
         }
+        else return
     };
     //Get default set option
     const getSelectedItem = () => {
@@ -365,7 +366,7 @@ function MultiSelectField({ id, name, Value, options, onChange, placeholder, isD
                 value={defvalue}
                 name={name}
                 options={options}
-                getOptionLabel={(option) => option.label}
+                getOptionLabel={(option) => option.label || ""}
                 clearOnBlur={false}
                 clearOnEscape={false}
                 filterSelectedOptions={true}

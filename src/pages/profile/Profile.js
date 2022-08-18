@@ -350,7 +350,7 @@ function Profile(props) {
                                         <InputBaseField
                                             startAdornment={
                                                 <InputAdornment position="start">
-                                                    <p style={{ cursor: 'not-allowed', paddingLeft: 5 }}>+92</p>
+                                                    <p style={{ cursor: 'not-allowed', padding:5}}>+92</p>
                                                 </InputAdornment>
                                             }
                                             placeholder="3XXXXXXXX"

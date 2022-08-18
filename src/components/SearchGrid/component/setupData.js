@@ -155,11 +155,11 @@ export const data = {
         }
     ],
     Question: [
-        {
-            title: '',
-            dataIndex: '_id',
-            className: "custom-grid-hide-col"
-        },
+        // {
+        //     title: '',
+        //     dataIndex: '_id',
+        //     className: "custom-grid-hide-col"
+        // },
         {
             title: 'Title',
             dataIndex: 'title',
