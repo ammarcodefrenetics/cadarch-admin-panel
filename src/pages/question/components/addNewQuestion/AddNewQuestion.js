@@ -65,7 +65,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
     //selected items
     const [questions, setQuestions] = useState([]);
     const [questionOptions, setQuestionOptions] = useState([]);
-    const [selectedDependencies, setSelectedDependencies] = useState(isEdit?null:[]);
+    const [selectedDependencies, setSelectedDependencies] = useState(isEdit ? null : []);
 
 
     const [loading, setLoading] = useState({ isSaving: false, isDeleting: false });
@@ -114,8 +114,8 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         setAttachment({ file: null, fileToSend: null, fileName: null });
         loadQuestionData();
         setQuestionOptions([]);
-        console.log(isEdit , " edit vlaue prior to setting dependencies")
-        setSelectedDependencies(isEdit?null:[]);
+        console.log(isEdit, " edit vlaue prior to setting dependencies")
+        setSelectedDependencies(isEdit ? null : []);
         setErrorMessages({
             questionTitleError: false,
             questionDisplayOrderError: false,
@@ -135,7 +135,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                 id: data._id,
                 title: data.title,
                 displayOrder: data.displayOrder,
-                isBasic: data.isBasic ,
+                isBasic: data.isBasic,
                 isDependent: data.isDependent,
                 details: data.details,
             });
@@ -167,7 +167,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         //     ...prevState,
         //     ['image']: files[0]
         // }));
-        //
+
     }
     //Change Values handlers
     const handleChange = e => {
@@ -253,7 +253,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
 
     //select options
     const handleMultiSelectChange = (name, selected) => {
-        console.log(name , " ----------- ",selected)
+        console.log(name, " ----------- ", selected)
         setState(prevState => ({
             ...prevState,
             [name]: selected
@@ -293,7 +293,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                 _id: optionsState._id,
                 title: optionsState.title,
                 priceEffectPSF: optionsState.priceEffectPSF,
-                displayOrder: optionsState.displayOrder,
+                // displayOrder: optionsState.displayOrder,
                 details: optionsState.details,
                 image: attachment.fileToSend
             };
@@ -311,7 +311,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                 setOptionsState({
                     title: "",
                     priceEffectPSF: "",
-                    displayOrder: "",
+                    // displayOrder: "",
                     details: "",
                     image: "",
                 });
@@ -325,7 +325,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                 setOptionsState({
                     title: "",
                     priceEffectPSF: "",
-                    displayOrder: "",
+                    // displayOrder: "",
                     details: "",
                     image: "",
                 });
@@ -336,28 +336,34 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
     }
     //edit single option
     const editOption = (item) => {
+        console.log(item, " inside edit item")
         setOptionsState(item);
-        let path = item?.image?.[0]?.replace(/\\/g, "/").replace('public/', '/');
-        setOptionImagePath(`http://localhost:5000${path}`)
-        setOptionsState(prevState => ({
-            ...prevState,
-            ["image"]: path ?? ''
-        }));
-    }
-    const viewOptionImage = (item) => {
+        setAttachment({
+            file: null,
+            fileToSend:null,
+            fileName: null
+        })
+        let path = ''
         if (Array.isArray(item.image) && item.image.length > 0) {
-            let path = item?.image?.[0]?.replace(/\\/g, "/").replace('public/', '/');
+            path = item?.image?.[0]?.replace(/\\/g, "/").replace('public/', '/');
             setOptionImagePath(`http://localhost:5000${path}`)
         }
-        else if (Array.isArray(item.image) && item.image.length === 0) {
-            return
-        }
-        else {
+        else{
             setAttachment({
                 file: URL.createObjectURL(item.image),
                 fileToSend: item.image,
                 fileName: item.image.name
             })
+        }
+
+
+        localStorage.setItem('optionsData', JSON.stringify({ ...item, image: path ?? '' }))
+    }
+    const viewOptionImage = (item) => {
+        if (Array.isArray(item.image) && item.image.length > 0) {
+            console.log('in if item : ', item)
+            let path = item?.image?.[0]?.replace(/\\/g, "/").replace('public/', '/');
+            setOptionImagePath(`http://localhost:5000${path}`)
         }
 
         setImagViewerDialogState(true);
@@ -368,7 +374,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         setOptionsState({
             title: "",
             priceEffectPSF: "",
-            displayOrder: "",
+            // displayOrder: "",
             details: "",
             image: "",
         });
@@ -500,13 +506,13 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
     //load question/options/dependencies in edit case
     const loadData = () => {
         GetDataAPI("question/getquestionbyId", data._id).then((result) => {
-            if (result.responseCode == 1 && result.responseStatus == "success" && result.data.data != null) {
+            if (result.responseCode === 1 && result.responseStatus === "success" && result.data.data !== null) {
                 // setState(result.data.data.questions);
                 setQuestionOptions(result.data.data.options);
-                setSelectedDependencies(result.data.data.dependencies)         
+                setSelectedDependencies(result.data.data.dependencies)
             }
             else if (!result.responseStatus) {
-                showMessage("Error", result.message, "error", 3000);
+                showMessage("Error", "something went wrong", "error", 3000);
             }
         })
     }
@@ -577,7 +583,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                 questionOptionTitleError: false
             }));
         }
-        if (!attachment || attachment?.fileName?.trim() == "" || !attachment?.fileName) {
+        if (!attachment || attachment?.fileName?.trim() == "" || !attachment?.fileName && !optionsState.image) {
             setErrorMessages(prevState => ({
                 ...prevState,
                 questionOptionImageError: true
@@ -745,6 +751,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                         })
                         UpdateDataAPI('dependencies/updateDependencybyid', dependencies, null).then((result) => {
                             if (result.responseCode == 1 && result.responseStatus == "success") {
+                                console.log('dependency updated successfully')
                             }
 
                         })
@@ -758,7 +765,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                             if (item._id === undefined) {
                                 PostDataAPI('questionOption/addquestionoption', formData, "form").then((result) => {
                                     if (result.responseCode == 1 && result.responseStatus == "success") {
-                                        // optionsCounter = optionsCounter + 1;
+                                        console.log("options added successfully")
                                     }
                                 })
 
@@ -767,7 +774,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
 
                                 UpdateDataAPI('questionOption/updateonequestionoption', formData, item._id, "form").then((result) => {
                                     if (result.responseCode == 1 && result.responseStatus == "success") {
-                                        // counter = counter = 1;
+                                        console.log('option updated successfully')
                                     }
                                 })
                             }
@@ -801,7 +808,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         //     loadDependencies()
         // }
         ResetForm();
-    }, [dialogOpenClose,isEdit]);
+    }, [dialogOpenClose, isEdit]);
     const ShowActionDialog = (actiontype, title, message, type, OnOkCallback, OnCancellCallback) => {
         setActionDialogProps(prevState => ({
             ...prevState,
@@ -951,12 +958,13 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                     <Grid item xs={12} sm={4} md={4} lg={4} >
                                                         <span className={classes.btnSpan}>
                                                             <Tooltip title={optionsState?.image ?? ""}>
+                                                            
                                                                 <InputBase
                                                                     id="uploadFile"
                                                                     name="uploadFile"
                                                                     className={classes.baseInput}
                                                                     placeholder="Select Image"
-                                                                    value={attachment?.fileName ?? optionsState.image}
+                                                                    value={attachment?.fileName ? attachment?.fileName : optionsState.image ?? null}
                                                                     disabled={true}
                                                                     endAdornment={
                                                                         <InputAdornment position="end">
@@ -1083,7 +1091,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             <th style={{ width: "20%", textAlign: "left" }}>Title</th>
                                                             <th style={{ width: "40%", textAlign: "left" }} >Description</th>
                                                             <th style={{ width: "20%", textAlign: "left" }} >price Effect(PSF)</th>
-                                                            <th style={{ width: "10%", textAlign: "left" }} >Image</th>
+                                                            {/* <th style={{ width: "10%", textAlign: "left" }} >Image</th> */}
                                                             {/* <th style={{ width: "15%" }}>Display Order</th> */}
                                                             <th style={{ width: "10%" }}>Action</th>
                                                         </tr>
@@ -1093,13 +1101,13 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             questionOptions.map((item, i) => {
                                                                 return <tr key={item.title}>
                                                                     <td style={{ textAlign: "left" }}>{item.title}</td>
-                                                                    <td className={classes.optionDetails} style={{ textAlign: "left",display:'block',width:'200px'}}>{item.details}</td>
+                                                                    <td className={classes.optionDetails} style={{ textAlign: "left", display: 'block', width: '200px' }}>{item.details}</td>
                                                                     <td style={{ textAlign: "left" }}>{item.priceEffectPSF}</td>
-                                                                    <td style={{ textAlign: "left" }}>
+                                                                    {/* <td style={{ textAlign: "left" }}>
                                                                         {(Array.isArray(item.image) && item.image.length > 0) || (item.image !== null && item.image !== undefined && item.image !== '') ? <img onClick={() => viewOptionImage(item)} src={ViewIcon} className={classes.viewIcon} alt='view' /> : null}
-                                                                    </td>
+                                                                    </td> */}
                                                                     <td style={{ textAlign: "center" }}>
-                                                                        {/* <img onClick={() => editOption(item)} src={EditIcon} alt="edit" /> */}
+                                                                        {isEdit ? <img onClick={() => editOption(item)} src={EditIcon} alt="edit" /> : null}
                                                                         <img src={DeleteIcon} alt="delete" onClick={() => handleDeleteOption(i, item._id)} />
                                                                     </td>
                                                                 </tr>
@@ -1118,7 +1126,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                     <Grid container direction="row">
                                                         <Label title="Title" sm={2} md={2} lg={2} />
                                                         <Grid item xs={12} sm={4} md={4} lg={4} >
-                                                        {console.log(selectedDependencies , "selected dependencies in parent" , "is edit" ,isEdit)}
+                                                            {console.log(selectedDependencies, "selected dependencies in parent", "is edit", isEdit)}
                                                             <SearchList
                                                                 id={state.id}
                                                                 name="questionName"
@@ -1144,11 +1152,11 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
 
                                                         <Grid item xs={10} sm={3} md={3} lg={3} >
                                                             <MultiSelectField
-                                                            key={state.questionId}
+                                                                key={state.questionId}
                                                                 id="questionOption"
                                                                 name="questionOption"
                                                                 options={optionsList}
-                                                                isDisabled={!state.questionId ? true :false}
+                                                                isDisabled={!state.questionId ? true : false}
                                                                 // isDisabled={optionsList.length <= 0 ? true :false}
                                                                 onChange={handleMultiSelectChange}
                                                                 placeholder='Select Question Option'
@@ -1162,9 +1170,9 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             }
                                                         </Grid>
                                                         <Grid item xs={2} sm={1} md={1} lg={1} >
-                                                        
+
                                                             <AddIcon onClick={handleAddDependency} className={classes.addIcon} />
-                                                        
+
                                                         </Grid>
 
                                                     </Grid>
@@ -1204,7 +1212,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                                 key={state.questionId}
                                                                 name="questionOption"
                                                                 options={optionsList}
-                                                                isDisabled={!state.questionId ? true :false}
+                                                                isDisabled={!state.questionId ? true : false}
                                                                 // isDisabled={optionsList.length <= 0 ? true :false}
                                                                 onChange={handleMultiSelectChange}
                                                                 placeholder='Select Question Option'
@@ -1218,9 +1226,9 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                                                             }
                                                         </Grid>
                                                         <Grid item xs={2} sm={1} md={1} lg={1} >
-                                                       
+
                                                             <AddIcon onClick={handleAddDependency} className={classes.addIcon} />
-                                                          
+
                                                         </Grid>
 
                                                     </Grid>
@@ -1254,7 +1262,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
 
                                                                             </td>
                                                                             <td style={{ textAlign: "center" }}>
-                                                                                <img src={EditIcon} alt="edit" onClick={() => editDependency(item)} />
+                                                                                {/* <img src={EditIcon} alt="edit" onClick={() => editDependency(item)} /> */}
                                                                                 <img src={DeleteIcon} alt="delete" onClick={() => deleteDependency(i, item._id)} />
                                                                             </td>
                                                                         </tr>
@@ -1314,17 +1322,23 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
             </Dialog>
             {imagViewerDialogState &&
                 <ImageViewer
-                    file={attachment.file}
+                    file={attachment?.file}
                     filePath={optionImagePath}
                     dialogOpenClose={imagViewerDialogState}
                     handleClose={() => {
                         setImagViewerDialogState(false)
                         setOptionImagePath('')
-                        // setAttachment({
+
+                        //     setAttachment({
                         //     file: '',
                         //     fileToSend: '',
                         //     fileName: ''
                         // })
+
+                        // setAttachment((prev)=>({
+                        //     ...prev,
+                        //     file:'',
+                        // }))
                     }} />
             }
             <ActionDialog

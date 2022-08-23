@@ -309,7 +309,7 @@ export default makeStyles(theme => ({
     cursor: "move"
   },
   content: {
-    flex: "1 1 auto",
+    // flex: "1 1 auto",
     marginBottom: "5px",
     "& img": {
       maxHeight: "600px",

@@ -647,6 +647,16 @@ export const data = {
             className: "custom-grid-hide-col"
         },
         {
+            title: 'Serial No',
+            dataIndex: 'serialNO',
+            className: "width150",
+            sorter: (a, b) => {
+                a = a.title != null ? a.title : "";
+                b = b.title != null ? b.title : "";
+                return a.localeCompare(b);
+            },
+        },
+        {
             title: 'Name',
             dataIndex: 'fullName',
             className: "width150",
@@ -660,6 +670,17 @@ export const data = {
             title: 'Contact',
             dataIndex: 'phoneNumber',
             className: "width220",
+            sorter: (a, b) => {
+                a = a.details != null ? a.details + '' : "";
+                b = b.details != null ? b.details + '' : "";
+                return a.localeCompare(b);
+            },
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            className: "width220",
+            ellipsis:true,
             sorter: (a, b) => {
                 a = a.details != null ? a.details + '' : "";
                 b = b.details != null ? b.details + '' : "";

@@ -246,7 +246,7 @@ function ImageViewer({ file, filePath, dialogOpenClose, handleClose, ...props })
                             <CloseIcon className={classes.crossButton} onClick={onClose} />
                         </div>
                         <div  className={classes.content}>
-                            <img src={filePath && !file ?filePath:file} />
+                            <img src={filePath && !file ?filePath:file} alt="img"/>
                         </div>
                     </div>
                 </div>

@@ -51,8 +51,8 @@ function UsersList(props) {
                     isView={true}
                     isEditAble={true}
                     isDelete={false}
-                    isSearchAble={false}
-                    isCustomSearch={true}
+                    isSearchAble={true}
+                    isCustomSearch={false}
                     columnCode="UsersColumns"
                     searchPanelParams="UsersColumns"
                     // isRowClickAble={true}

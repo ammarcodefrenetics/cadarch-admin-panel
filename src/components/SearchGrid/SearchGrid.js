@@ -110,15 +110,28 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                         item.size = item.size ? item.size + " " + item.unit : ""
                         item.action =
                             <div style={{ width: "100%", textAlign: "right"  }}>
-                                {isQuestions && i !== allQuestions.length - 1 && <Tooltip style={{ paddingRight: 5 }} title="Swipe Down">
+                                {isQuestions && i !== allQuestions.length - 1 && i !==1 && i !== 2 && i !== 1 && i !== 0 &&  i !== 3 &&<Tooltip style={{ paddingRight: 5 }} title="Swipe Down">
                                     <Icon> <img src={arrowDown} onClick={() => {
-                                        onSwipe(item._id, array[i + 1]._id,item.isBasic, array[i + 1].isBasic, data, item.displayOrder, array[i + 1].displayOrder)
+                                        onSwipe(item._id,
+                                         array[i + 1]._id,
+                                         item.isBasic,
+                                         array[i + 1].isBasic, 
+                                         data, 
+                                         item.displayOrder,
+                                          array[i + 1].displayOrder
+                                          )
                                     }} className={classes.Icon} /> </Icon>
                                 </Tooltip>
                                 }
-                                {isQuestions && i !== 0 && <Tooltip style={{ paddingRight: 5 }} title="Swipe Up">
+                                {isQuestions && i !== 0 && i !== 3 && i !== 2 && i !== 1 &&  i !== 3 && i !== 4 &&  <Tooltip style={{ paddingRight: 5 }} title="Swipe Up">
                                     <Icon> <img src={arrowUp} onClick={() => {
-                                        onSwipe(item._id, array[i - 1]._id,item.isBasic, array[i - 1].isBasic, data, item.displayOrder, array[i - 1].displayOrder)
+                                        onSwipe(item._id,
+                                         array[i - 1]._id,
+                                         item.isBasic,
+                                          array[i - 1].isBasic,
+                                           data,
+                                            item.displayOrder,
+                                             array[i - 1].displayOrder)
                                     }
                                      } className={classes.Icon} /> </Icon>
                                 </Tooltip>
@@ -131,7 +144,7 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                                     <Icon> <img src={Erase} onClick={() => onEdit(item)} className={classes.Icon} disabled={true} /> </Icon>
                                 </Tooltip>
                                 }
-                                {isDelete && <Tooltip title="Delete">
+                                {isDelete && i !==0 && i !==1 && i !==2 && i!==3 && <Tooltip title="Delete">
                                     <Icon> <img src={Delete} onClick={() => onDelete(item._id)} className={classes.Icon} /> </Icon>
                                 </Tooltip>
                                 }
@@ -161,7 +174,7 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                                         <Icon> <img src={Delete} onClick={() => onDelete(item._id)} className={classes.Icon} /> </Icon>
                                     </Tooltip>
                                     }
-                                    {isDelete && isToggle && !item.isActive && <Tooltip title="Delete">
+                                    {isDelete && isToggle && !item.isActive  && <Tooltip title="Delete">
                                         <Icon> <img src={Delete} onClick={() => onDelete(item._id)} className={classes.Icon} /> </Icon>
                                     </Tooltip>
                                     }
@@ -178,11 +191,17 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                     item.size = item.size ? item.size + " " + item.unit : ""
                     item.action =
                         <div style={{ width: "100%", textAlign: "right"  }}>
-                            {isQuestions && i !== allQuestions.length - 1 && <Tooltip style={{ paddingRight: 5 }} title="Swipe Down">
-                                <Icon> <img src={arrowDown} onClick={() => onSwipe(item._id, allQuestions[i + 1]._id,item.isBasic, allQuestions[i + 1].isBasic, data, item.displayOrder, allQuestions[i + 1].displayOrder)} className={classes.Icon} /> </Icon>
+                            {isQuestions && i !== allQuestions.length - 1 &&  i !==1 && i !== 2 && i !== 1 && i !== 0 &&  i !== 3 && <Tooltip style={{ paddingRight: 5 }} title="Swipe Down">
+                                <Icon> <img src={arrowDown} onClick={() => onSwipe(item._id,
+                                 allQuestions[i + 1]._id,
+                                 item.isBasic,
+                                  allQuestions[i + 1].isBasic,
+                                   data, item.displayOrder,
+                                    allQuestions[i + 1].displayOrder)
+                                    } className={classes.Icon} /> </Icon>
                             </Tooltip>
                             }
-                            {isQuestions && i !== 0 && <Tooltip style={{ paddingRight: 5 }} title="Swipe Up">
+                            {isQuestions && i !== 0 && i !== 3 && i !== 2 && i !== 1 &&  i !== 3 && i !== 4 && <Tooltip style={{ paddingRight: 5 }} title="Swipe Up">
                                 <Icon> <img src={arrowUp} onClick={() => onSwipe(item._id, allQuestions[i - 1]._id,item.isBasic, allQuestions[i - 1].isBasic, data, item.displayOrder, allQuestions[i - 1].displayOrder)} className={classes.Icon} /> </Icon>
                             </Tooltip>
                             }
@@ -194,7 +213,7 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                                 <Icon> <img src={Erase} onClick={() => onEdit(item)} className={classes.Icon} disabled={true} /> </Icon>
                             </Tooltip>
                             }
-                            {isDelete && <Tooltip title="Delete">
+                            {isDelete && i !==0 && i !==1 && i !==2 && i !==3 && <Tooltip title="Delete">
                                 <Icon> <img src={Delete} onClick={() => onDelete(item._id)} className={classes.Icon} /> </Icon>
                             </Tooltip>
                             }
