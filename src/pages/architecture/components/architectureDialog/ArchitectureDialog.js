@@ -22,6 +22,7 @@ import GoogleMap from "../../../../components/googleMaps/GoogleMap";
 import { Scrollbars } from "rc-scrollbars";
 import axios from 'axios';
 import { UpdateDataAPI } from "../../../../Services/UpdateDataAPI";
+import { baseUrlForFiles } from "../../../../Configuration/baseUrlForFiles";
 function ArchitectureDialog({ data, dialogOpenClose, handleClose, ...props }) {
 
     // handle styles
@@ -288,7 +289,7 @@ function ArchitectureDialog({ data, dialogOpenClose, handleClose, ...props }) {
                                             <Grid item xs={12} sm={8} md={8} lg={8} style={{ marginTop: 10, marginBottom: 10 }}  >
 
                                                 <audio controls className={classes.audioFile}>
-                                                    <source src={`http://localhost:5000/${data.audioFile}`} type="audio/mpeg" />
+                                                    <source src={`${baseUrlForFiles}/${data.audioFile}`} type="audio/mpeg" />
                                                 </audio>
 
                                                 {/* <GoogleMap /> */}
@@ -298,7 +299,7 @@ function ArchitectureDialog({ data, dialogOpenClose, handleClose, ...props }) {
                                         </Grid>
                                         {data.location ? (
                                             <Grid>
-                                                <GoogleMap coords={data?.location[0]?.coordinates} />
+                                                <GoogleMap coords={data?.location[0]} />
                                             </Grid>
                                         ) : null}
                                         {
@@ -309,14 +310,14 @@ function ArchitectureDialog({ data, dialogOpenClose, handleClose, ...props }) {
                                                 <Grid item xs={12} sm={2} md={2} lg={2} />
 
                                                 <Grid item xs={12} sm={10} md={10} lg={10}>
-
+                                    
                                                     <ul className={classes.imageList}>
                                                         {
                                                             // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25].map((item, i) => {
                                                             (data?.attachmentsPath?.length > 0) && data.attachmentsPath.map((item, i) => {
                                                                 let extArray = item.path.split(".")[1];
                                                                 if (extArray !== "mp3" && extArray !== 'm4a') {
-                                                                    var path = "http://localhost:5000/" + item.path
+                                                                    var path = baseUrlForFiles+"/" + item.path
                                                                     return (
                                                                         <li key={item._id} className={classes.root}>
                                                                             <a href={path} target="_blank">

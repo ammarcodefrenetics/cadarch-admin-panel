@@ -19,6 +19,7 @@ import SearchGrid from '../../../../components/SearchGrid/SearchGrid';
 import { Scrollbars } from "rc-scrollbars";
 import { UpdateDataAPI } from "../../../../Services/UpdateDataAPI";
 import GoogleMap from "../../../../components/googleMaps/GoogleMap";
+import { baseUrlForFiles } from "../../../../Configuration/baseUrlForFiles";
 // import GoogleMap from "../../../../components/googleMaps/GoogleMap";
 
 function RenovationDialog({ data, dialogOpenClose, handleClose, ...props }) {
@@ -288,7 +289,7 @@ function RenovationDialog({ data, dialogOpenClose, handleClose, ...props }) {
                                             <Grid item xs={12} sm={8} md={8} lg={8}  >
 
                                                 <audio controls className={classes.audioFile}>
-                                                    <source src={`http://localhost:5000/${data.audioFile}`} type="audio/mpeg" />
+                                                    <source src={`${baseUrlForFiles}/${data.audioFile}`} type="audio/mpeg" />
                                                 </audio>
 
                                                 {/* <GoogleMap /> */}
@@ -317,7 +318,7 @@ function RenovationDialog({ data, dialogOpenClose, handleClose, ...props }) {
                                                             (data?.attachmentsPath?.length > 0) && data.attachmentsPath.map((item, i) => {
                                                                 let extArray = item.path.split(".")[1];
                                                                 if (extArray != "mp3") {
-                                                                    var path = "http://localhost:5000/" + item.path.replace(/\\/g, "/");
+                                                                    var path = baseUrlForFiles+"/" + item.path.replace(/\\/g, "/");
                                                                     return (
                                                                         <li key={item._id} className={classes.root}>
                                                                             <a href={path} target="_blank">

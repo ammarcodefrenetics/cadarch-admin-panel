@@ -20,6 +20,7 @@ import editIcon from '../../images/icons/pencil.png'
 
 import useStyles from './styles';
 import { UpdateDataAPI } from '../../Services/UpdateDataAPI';
+import { baseUrlForFiles } from '../../Configuration/baseUrlForFiles';
 
 function Profile(props) {
     var classes = useStyles();
@@ -257,7 +258,7 @@ function Profile(props) {
                                         <Grid container justify="center" justify-content='center'>
                                             <label htmlFor="fileUploadField" className={classes.uploadImageLabel}>
                                                 {profileImage.file || state.profilePhoto ?
-                                                    <img style={editMode ? { cursor: 'pointer' } : { cursor: 'no-drop' }} id='profileImgSource' src={profileImage.file != null ? profileImage.file : "http://localhost:5000" + state.profilePhoto.replace(/\\/g, "/").replace('public/', '/')} alt='' className={classes.uploadImage} />
+                                                    <img style={editMode ? { cursor: 'pointer' } : { cursor: 'no-drop' }} id='profileImgSource' src={profileImage.file != null ? profileImage.file : baseUrlForFiles + state.profilePhoto.replace(/\\/g, "/").replace('public/', '/')} alt='' className={classes.uploadImage} />
                                                     : <div className={classes.uploadImageBox}></div>
                                                 }
                                                 <AddAPhotoIcon style={editMode ? { cursor: 'pointer' } : { cursor: 'no-drop' }} className={classes.uploadImageIcon} />

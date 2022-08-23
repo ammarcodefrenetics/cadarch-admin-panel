@@ -28,9 +28,8 @@ const ResetPassword = lazy(() => import('../pages/resetPassword'));
 
 export default function App() {
     // global
-    //console.log("appjs env name " + process.env.NODE_ENV);
-    //console.log("appjs env url " + process.env.REACT_APP_API_URL);
-    sessionStorage.setItem('server_api_url', process.env.REACT_APP_API_URL);
+ 
+    sessionStorage.setItem('server_api_url', "https://cadarch-server-v1.herokuapp.com/api/");
 
     var { isAuthenticated } = useUserState();
 

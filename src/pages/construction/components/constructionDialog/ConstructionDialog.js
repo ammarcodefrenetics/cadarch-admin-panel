@@ -22,6 +22,7 @@ import SearchGrid from '../../../../components/SearchGrid/SearchGrid';
 import GoogleMap from "../../../../components/googleMaps/GoogleMap";
 import { Scrollbars } from "rc-scrollbars";
 import { UpdateDataAPI } from "../../../../Services/UpdateDataAPI";
+import { baseUrlForFiles } from "../../../../Configuration/baseUrlForFiles";
 function ConstructionDialog({ data, dialogOpenClose, handleClose, ...props }) {
 
     // handle styles
@@ -294,7 +295,7 @@ function ConstructionDialog({ data, dialogOpenClose, handleClose, ...props }) {
                                             <Grid item xs={12} sm={8} md={8} lg={8}  style={{marginTop:10 , marginBottom:10}}>
 
                                                 <audio controls className={classes.audioFile}>
-                                                    <source src={`http://localhost:5000/${state.audioFile}`} type="audio/mpeg" />
+                                                    <source src={`${baseUrlForFiles}/${state.audioFile}`} type="audio/mpeg" />
                                                 </audio>
 
                                                 {/* <GoogleMap /> */}
@@ -304,7 +305,7 @@ function ConstructionDialog({ data, dialogOpenClose, handleClose, ...props }) {
                                         </Grid>
                                         {state.location ? (
                                             <Grid>
-                                                <GoogleMap coords={data?.location[0]?.coordinates} />
+                                                <GoogleMap coords={data?.location[0]} />
                                             </Grid>
                                         ) : null}
                                         {
@@ -322,7 +323,7 @@ function ConstructionDialog({ data, dialogOpenClose, handleClose, ...props }) {
                                                             (state?.attachmentsPath?.length > 0) && state.attachmentsPath.map((item, i) => {
                                                                 let extArray = item?.path?.split(".")[1];
                                                                 if (extArray !== "mp3" && extArray !== "m4a") {
-                                                                    var path = "http://localhost:5000/" + item?.path?.replace(/\\/g, "/");
+                                                                    var path = baseUrlForFiles+"/" + item?.path?.replace(/\\/g, "/");
                                                                     return (
                                                                         <li key={item._id} className={classes.root}>
                                                                             <a href={path} target="_blank">

@@ -13,6 +13,7 @@ import ArchitectureIcon from '../../../../images/icons/architecture.png'
 // styles
 import useStyles from "./styles";
 import axios from "axios";
+import { baseUrlForFiles } from "../../../../Configuration/baseUrlForFiles";
 export default function DashboardUpdateBox(props) {
   var classes = useStyles();
   const [dashboardData, setDashboardData] = useState(null)
@@ -21,7 +22,7 @@ export default function DashboardUpdateBox(props) {
   }, [])
 
   const getDashboardData = async () => {
-    const res = await axios.get('http://localhost:5000/api/dashboard/getallcounteddocuments')
+    const res = await axios.get(`${baseUrlForFiles}/api/dashboard/getallcounteddocuments`)
     if (res.data.responseCode === 1) {
       setDashboardData(res.data.data)
     }

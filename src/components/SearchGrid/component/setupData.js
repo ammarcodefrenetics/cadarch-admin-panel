@@ -641,11 +641,11 @@ export const data = {
         }
     ],
     UsersColumns: [
-        {
-            title: '',
-            dataIndex: '_id',
-            className: "custom-grid-hide-col"
-        },
+        // {
+        //     title: '',
+        //     dataIndex: '_id',
+        //     className: "custom-grid-hide-col"
+        // },
         {
             title: 'Serial No',
             dataIndex: 'serialNO',

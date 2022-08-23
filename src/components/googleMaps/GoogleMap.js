@@ -9,9 +9,9 @@ function GoogleMap({ coords }) {
     var classes = useStyles();
     return (
         <Grid className={classes.mapStyles}>
-            <Map height={250} defaultCenter={coords} defaultZoom={18}>
+            <Map height={250} defaultCenter={[coords.latitude , coords.longitude]} defaultZoom={18}>
                 <ZoomControl />
-                <Marker color={'red'} width={40} anchor={coords} />
+                <Marker color={'red'} width={40} anchor={[coords.latitude ,coords.longitude]} />
             </Map>
         </Grid>
     )

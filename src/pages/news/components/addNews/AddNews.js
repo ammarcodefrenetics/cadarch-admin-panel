@@ -21,6 +21,7 @@ import { ActionDialog } from "../../../../components/ActionDialog/ActionDialog";
 import SearchGrid from '../../../../components/SearchGrid/SearchGrid';
 import { Scrollbars } from "rc-scrollbars";
 import { UpdateDataAPI } from "../../../../Services/UpdateDataAPI";
+import { baseUrlForFiles } from "../../../../Configuration/baseUrlForFiles";
 function AddNews({ data, isEdit, dialogOpenClose, handleClose, ...props }) {
 
     // handle styles
@@ -101,9 +102,9 @@ function AddNews({ data, isEdit, dialogOpenClose, handleClose, ...props }) {
                 title: data?.title,
                 details: data?.details,
                 image: path,
-                attachmentPath: "http://localhost:5000" + path
+                attachmentPath: baseUrlForFiles + path
             });
-            setOptionImagePath(`http://localhost:5000${path}`);
+            setOptionImagePath(`${baseUrlForFiles}${path}`);
             setAttachment({
                 fileName: path ?? ''
             })

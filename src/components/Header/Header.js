@@ -48,6 +48,7 @@ import LogoutIcon from "../../images/icons/logout.png";
 import TaskListIcon from "../../images/icons/task-list-icon.png";
 import NotificationListIcon from "../../images/icons/notification-list-icon.png";
 import LoadingIcon from "../../images/icons/loaderIcon.gif";
+import { baseUrlForFiles } from "../../Configuration/baseUrlForFiles";
 //Redux
 import { connect } from 'react-redux';
 
@@ -178,7 +179,7 @@ function Header(props) {
                                 onClick={e => setProfileMenu(e.currentTarget)}
                             >
                                 <img
-                                    src={userdata != null && userdata.profilePhoto != null ? "http://localhost:5000"+userdata.profilePhoto.replace(/\\/g, "/").replace('public/', '/') : ProfilePic}
+                                    src={userdata != null && userdata.profilePhoto != null ? baseUrlForFiles+userdata.profilePhoto.replace(/\\/g, "/").replace('public/', '/') : ProfilePic}
                                     alt="User DP"
                                     className={classes.userDp}
                                     onError={(e) => (e.target.onerror = null, e.target.src = ProfilePic)}

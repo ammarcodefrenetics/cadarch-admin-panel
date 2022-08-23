@@ -24,6 +24,7 @@ import { Scrollbars } from "rc-scrollbars";
 import { UpdateDataAPI } from "../../../../Services/UpdateDataAPI";
 import { Typography } from "antd";
 import { data } from "../../../../components/SearchGrid/component/setupData";
+import { baseUrlForFiles } from "../../../../Configuration/baseUrlForFiles";
 // import GoogleMap from "../../../../components/googleMaps/GoogleMap";
 
 function PlotDialog({ data, isEdit, dialogOpenClose, handleClose, ...props }) {
@@ -120,9 +121,9 @@ function PlotDialog({ data, isEdit, dialogOpenClose, handleClose, ...props }) {
                 coveredAreaWithBasement: data.coveredAreaWithBasement,
                 coveredArea: data.coveredArea,
                 image: path,
-                attachmentPath: "http://localhost:5000" + path
+                attachmentPath: baseUrlForFiles + path
             });
-            setOptionImagePath(`http://localhost:5000${path}`);
+            setOptionImagePath(`${baseUrlForFiles}${path}`);
             setAttachment({
                 fileName: path ?? ''
             })

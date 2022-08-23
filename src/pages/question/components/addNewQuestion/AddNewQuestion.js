@@ -35,6 +35,7 @@ import { GetUserInfo } from "../../../../Services/GetUserInfo";
 import { UpdateDataAPI } from "../../../../Services/UpdateDataAPI";
 import { DeleteDataAPI } from "../../../../Services/DeleteDataAPI";
 import { check } from "prettier";
+import { baseUrlForFiles } from "../../../../Configuration/baseUrlForFiles";
 // import MapComponent from "../../../../components/map/Map";
 let dep = null
 function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }) {
@@ -106,8 +107,8 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         });
         setOptionsState({
             title: "",
-            priceEffectPSF: 0,
-            displayOrder: 0,
+            priceEffectPSF: '',
+            // displayOrder: 0,
             details: "",
             image: "",
         });
@@ -346,7 +347,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         let path = ''
         if (Array.isArray(item.image) && item.image.length > 0) {
             path = item?.image?.[0]?.replace(/\\/g, "/").replace('public/', '/');
-            setOptionImagePath(`http://localhost:5000${path}`)
+            setOptionImagePath(`${baseUrlForFiles}${path}`)
         }
         else{
             setAttachment({
@@ -363,7 +364,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
         if (Array.isArray(item.image) && item.image.length > 0) {
             console.log('in if item : ', item)
             let path = item?.image?.[0]?.replace(/\\/g, "/").replace('public/', '/');
-            setOptionImagePath(`http://localhost:5000${path}`)
+            setOptionImagePath(`${baseUrlForFiles}${path}`)
         }
 
         setImagViewerDialogState(true);

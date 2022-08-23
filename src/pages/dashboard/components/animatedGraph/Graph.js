@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { BoxContainer } from '../boxContainer/BoxContainer';
 import useStyles from "./styles";
 import axios from 'axios';
+import { baseUrlForFiles } from '../../../../Configuration/baseUrlForFiles';
 const Graph = () => {
     var classes = useStyles();
     const [data, setData] = useState([]);
@@ -13,7 +14,7 @@ const Graph = () => {
     }, []);
 
     const asyncFetch = async () => {
-        const res = await axios.get('http://localhost:5000/api/dashboard/getallusersbymonth')
+        const res = await axios.get(`${baseUrlForFiles}/api/dashboard/getallusersbymonth`)
         if (res.data.responseCode === 1) {
             setData(res?.data?.data?.graphData ?? [])
         }
