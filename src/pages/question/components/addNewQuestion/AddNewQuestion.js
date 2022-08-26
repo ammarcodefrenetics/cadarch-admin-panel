@@ -349,7 +349,8 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
             path = item?.image?.[0]?.replace(/\\/g, "/").replace('public/', '/');
             setOptionImagePath(`${baseUrlForFiles}${path}`)
         }
-        else{
+
+        else if(item.image !== null && item.image !== undefined){
             setAttachment({
                 file: URL.createObjectURL(item.image),
                 fileToSend: item.image,
