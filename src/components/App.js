@@ -27,7 +27,7 @@ const ResetPassword = lazy(() => import('../pages/resetPassword'));
 // const IDMeCallback = lazy(() => import('../pages/idmeCallback'));
 
 export default function App() {
-    // global
+    // global https://cadarch-server-v1.herokuapp.com/api/
  
     sessionStorage.setItem('server_api_url', "https://cadarch-server-v1.herokuapp.com/api/");
 

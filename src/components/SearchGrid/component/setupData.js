@@ -150,7 +150,7 @@ export const data = {
         {
             title: 'Action',
             dataIndex: 'action',
-            align: "right",
+            align: "center",
             className: "width100"
         }
     ],

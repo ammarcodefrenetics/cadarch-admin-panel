@@ -253,7 +253,8 @@ export default makeStyles(theme => ({
   viewIcon: {
     width: "18px",
     height: "16px",
-    cursor: "pointer"
+    cursor: "pointer",
+    
   },
   rowBold:{
     fontWeight:800

@@ -160,7 +160,7 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                             item.action =
                                 <div style={{ width: "100%", textAlign: "right" }}>
                                     {isView && <Tooltip title="View">
-                                        <Icon> <img src={View} onClick={() => onView(item)} className={classes.viewIcon} disabled={true} /> </Icon>
+                                        <Icon> <img src={View} onClick={() => onView(item)} className={classes.Icon} disabled={true} /> </Icon>
                                     </Tooltip>
                                     }
                                     {isEditAble && <Tooltip title="Edit">
@@ -229,7 +229,7 @@ export default function SearchGrid({ code, apiurl, onEdit, onDelete, onAddNew, i
                         item.action =
                             <div style={{ width: "100%", textAlign: "right" }}>
                                 {isView && <Tooltip title="View">
-                                    <Icon> <img src={View} onClick={() => onView(item)} className={classes.viewIcon} disabled={true} /> </Icon>
+                                    <Icon> <img src={View} onClick={() => onView(item)} className={classes.Icon} disabled={true} /> </Icon>
                                 </Tooltip>
                                 }
                                 {isEditAble && <Tooltip title="Edit">

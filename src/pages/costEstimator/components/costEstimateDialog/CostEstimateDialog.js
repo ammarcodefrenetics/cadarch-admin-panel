@@ -45,7 +45,7 @@ function CostEstimateDialog({ data, dialogOpenClose, handleClose, showMessage, .
                                             </span>
                                             <span>
                                                 <Typography className={classes.headerLabel}>Estimate Cost:</Typography>
-                                                <Typography className={classes.labelValue}>{data?.totalEstimate}</Typography>
+                                                <Typography className={classes.labelValue}>{data?.totalEstimate?.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,').substring(0, data?.totalEstimate?.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,').length-3)} <strong> /RS</strong></Typography>
                                             </span>
                                         </div>
                                         <div className={classes.headerSubContainer}>
