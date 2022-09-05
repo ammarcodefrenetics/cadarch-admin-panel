@@ -597,7 +597,7 @@ function AddNewQuestion({ data, isEdit, dialogOpenClose, handleClose, ...props }
                 questionOptionImageError: false
             }));
         }
-        if (!optionsState.priceEffectPSF || optionsState.priceEffectPSF <= 0) {
+        if (!optionsState.priceEffectPSF) {
             setErrorMessages(prevState => ({
                 ...prevState,
                 questionOptionPSFError: true
